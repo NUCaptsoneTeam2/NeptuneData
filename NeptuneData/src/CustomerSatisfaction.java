@@ -36,7 +36,12 @@ public class CustomerSatisfaction {
 	public int getNum1stars() {
 		return num1stars;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "CustomerSatisfaction [employee=" + employee + ", num5stars=" + num5stars + ", num4stars=" + num4stars
+				+ ", num3stars=" + num3stars + ", num2stars=" + num2stars + ", num1stars=" + num1stars + "]";
+	}
 	
 	
 }

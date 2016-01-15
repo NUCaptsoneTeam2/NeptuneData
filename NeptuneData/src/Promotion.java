@@ -31,6 +31,8 @@ public class Promotion {
 		return make;
 	}
 	
+	
+	
 
 	public enum Month
 	{
@@ -45,6 +47,13 @@ public class Promotion {
 			return value;
 		}	
 		
+	}
+
+
+	@Override
+	public String toString() {
+		return "Promotion [promotionId=" + promotionId + ", months=" + months + ", cashbackBonus=" + cashbackBonus
+				+ ", make=" + make + "]";
 	}
 
 }

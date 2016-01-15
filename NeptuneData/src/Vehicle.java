@@ -36,4 +36,10 @@ public class Vehicle {
 	  ALL, Coupe, Pickup, Sedan, SUV;
 	}
 
+	@Override
+	public String toString() {
+		return "Vehicle [model=" + model + ", make=" + make + ", cost=" + cost + ", tagPrice=" + tagPrice + "]";
+	}
+	
+
 }

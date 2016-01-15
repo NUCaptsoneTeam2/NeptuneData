@@ -28,5 +28,11 @@ public class Employee {
 	public Dealership getDealership() {
 		return dealership;
 	}
+
+	@Override
+	public String toString() {
+		return "Employee [name=" + name + ", employeeId=" + employeeId + ", baseSalary=" + baseSalary + ", dealership="
+				+ dealership + "]";
+	}
 	
 }

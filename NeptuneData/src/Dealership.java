@@ -42,5 +42,11 @@ public class Dealership {
 	public List<Promotion> getPromotions() {
 		return promotions;
 	}
+
+	@Override
+	public String toString() {
+		return "Dealership [dealershipId=" + dealershipId + ", city=" + city + ", state=" + state + ", zip=" + zip
+				+ ", manager=" + manager + ", operatingCosts=" + operatingCosts + ", promotions=" + promotions + "]";
+	}
 	
 }

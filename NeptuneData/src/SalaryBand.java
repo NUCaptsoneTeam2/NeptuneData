@@ -41,6 +41,5 @@ public class SalaryBand {
 				+ paidTimeOffDays + ", bonusPercentage=" + bonusPercentage + "]";
 	}
 	
-	
-	
+
 }
