@@ -5,9 +5,9 @@ public class SalaryBand {
 	private int minimum;
 	private int maximum;
 	private int paidTimeOffDays;
-	private int bonusPercentage;
+	private float bonusPercentage;
 	
-	public SalaryBand(String band, int minimum, int maximum, int paidTimeOffDays, int bonusPercentage) {
+	public SalaryBand(String band, int minimum, int maximum, int paidTimeOffDays, float bonusPercentage) {
 		this.band = band;
 		this.minimum = minimum;
 		this.maximum = maximum;
@@ -31,8 +31,16 @@ public class SalaryBand {
 		return paidTimeOffDays;
 	}
 
-	public int getBonusPercentage() {
+	public float getBonusPercentage() {
 		return bonusPercentage;
 	}
+
+	@Override
+	public String toString() {
+		return "SalaryBand [band=" + band + ", minimum=" + minimum + ", maximum=" + maximum + ", paidTimeOffDays="
+				+ paidTimeOffDays + ", bonusPercentage=" + bonusPercentage + "]";
+	}
+	
+	
 	
 }

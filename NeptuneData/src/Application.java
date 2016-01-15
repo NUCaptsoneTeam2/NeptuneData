@@ -1,10 +1,15 @@
-import java.io.Console;
+
 
 public class Application {
-
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//wr
+
+		try {
+			ParseSalaryBand.parse();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
