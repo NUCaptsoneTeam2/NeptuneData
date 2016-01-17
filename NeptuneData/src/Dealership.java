@@ -7,8 +7,10 @@ public class Dealership {
 	private String state;
 	private int zip;
 	private Employee manager;
+	private int managerId;
 	private int operatingCosts;
 	private List<Promotion> promotions;
+	private String[] promoIds; 
 	
 	public Dealership(int dealershipId, String city, String state, int zip, Employee manager, int operatingCosts,
 			List<Promotion> promotions) {
@@ -17,8 +19,22 @@ public class Dealership {
 		this.state = state;
 		this.zip = zip;
 		this.manager = manager;
+		//TODO: do we need to set managerId for any reason?
+		//this.managerId = this.manager.
 		this.operatingCosts = operatingCosts;
 		this.promotions = promotions;
+	}
+
+	public Dealership(int dealershipId, String city, String state, int zip, int managerId, int operatingCosts,
+			String[] promotionList) {
+		this.dealershipId = dealershipId;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.managerId = managerId;
+		this.operatingCosts = operatingCosts;
+		this.promoIds = promotionList;
+		
 	}
 	
 	public int getDealershipId() {
@@ -36,17 +52,23 @@ public class Dealership {
 	public Employee getManager() {
 		return manager;
 	}
+	public int getManagerId() {
+		return managerId;
+	}
 	public int getOperatingCosts() {
 		return operatingCosts;
 	}
 	public List<Promotion> getPromotions() {
 		return promotions;
 	}
+	public String[] getPromoIds() {
+		return promoIds;
+	}
 
 	@Override
 	public String toString() {
 		return "Dealership [dealershipId=" + dealershipId + ", city=" + city + ", state=" + state + ", zip=" + zip
-				+ ", manager=" + manager + ", operatingCosts=" + operatingCosts + ", promotions=" + promotions + "]";
+				+ ", manager=" + managerId + ", operatingCosts=" + operatingCosts + ", promotions=" + promoIds + "]";
 	}
 	
 }

@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,8 +13,11 @@ public class ParseSalaryBand {
 	   List<SalaryBand> list = new ArrayList<SalaryBand>();
 	   BufferedReader br = new BufferedReader(new FileReader(path));
 	   String line = "";
-	   while((line = br.readLine()) != null) {  
+	   while((line = br.readLine()) != null) 
+	   {  
 	       String[] fields = line.split("[|]");
+	       
+	       //Create local variables for fields
 	       String band = (String)fields[0];
 	       int min = Integer.parseInt(fields[1]);
 	       int max = Integer.parseInt(fields[2]);

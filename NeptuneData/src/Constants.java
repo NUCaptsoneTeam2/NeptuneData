@@ -14,7 +14,12 @@ public class Constants {
 	public static String FILE_SATISFACTION = properties.getProperty("FILE_SATISFACTION");
 	public static String FILE_DEALERSHIP = properties.getProperty("FILE_DEALERSHIP");
 	public static String FILE_SALARYBAND = properties.getProperty("FILE_SALARYBAND");
-	public static String FILE_SALESMAN = properties.getProperty("FILE_SALESMAN");
+	
+	public static String CONNECTION_URL = properties.getProperty("CONNECTION_URL");
+	public static String USERNAME = properties.getProperty("USERNAME");
+	public static String PASSWORD = properties.getProperty("PASSWORD");
+	public static String CATALOG = properties.getProperty("CATALOG");
+	public static String DRIVER = properties.getProperty("DRIVER");
 
 	private static Properties getProperties()
 	{
