@@ -1,3 +1,8 @@
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SalaryBand {
 
@@ -41,5 +46,42 @@ public class SalaryBand {
 				+ paidTimeOffDays + ", bonusPercentage=" + bonusPercentage + "]";
 	}
 	
+	public static List<SalaryBand> getAllRaw() {
+
+		// Declare the JDBC objects.
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		String table = "raw_SalaryBands";
+		List<SalaryBand> list = new ArrayList<SalaryBand>();
+
+		try {
+
+			String sql = "select * from %s";
+
+			conn = ConnectionFactory.getConnection();  
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery(String.format(sql, table));
+			while (rs.next()) {
+				SalaryBand item = new SalaryBand(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getFloat(5));
+				list.add(item);
+			}
+
+		}
+
+		// Handle errors.
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			if (null != rs) try { rs.close(); } catch(Exception e) {}
+			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
+			if (null != conn) try { conn.close(); } catch(Exception e) {}
+		}
+
+		return list;
+	}
 
 }

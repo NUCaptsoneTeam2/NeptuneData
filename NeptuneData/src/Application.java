@@ -35,13 +35,18 @@ public class Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
-*/
+
 		// Employee
 		try {
 			ParseEmployee.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
-
+*/
+		try {
+			EmployeeCalc.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
 	}
 }
