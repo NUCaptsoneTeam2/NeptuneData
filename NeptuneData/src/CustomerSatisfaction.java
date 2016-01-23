@@ -2,6 +2,7 @@
 public class CustomerSatisfaction {
 
 	private Employee employee;
+	private int employeeId;
 	private int num5stars;
 	private int num4stars;
 	private int num3stars;
@@ -18,8 +19,21 @@ public class CustomerSatisfaction {
 		this.num1stars = num1stars;
 	}
 	
+	public CustomerSatisfaction(int employeeId, int num5stars, int num4stars, int num3stars, int num2stars,
+			int num1stars) {
+		this.employeeId = employeeId;
+		this.num5stars = num5stars;
+		this.num4stars = num4stars;
+		this.num3stars = num3stars;
+		this.num2stars = num2stars;
+		this.num1stars = num1stars;
+	}
+
 	public Employee getEmployee() {
 		return employee;
+	}
+	public int getEmployeeId() {
+		return employeeId;
 	}
 	public int getNum5stars() {
 		return num5stars;
@@ -39,7 +53,7 @@ public class CustomerSatisfaction {
 
 	@Override
 	public String toString() {
-		return "CustomerSatisfaction [employee=" + employee + ", num5stars=" + num5stars + ", num4stars=" + num4stars
+		return "CustomerSatisfaction [employee=" + employeeId + ", num5stars=" + num5stars + ", num4stars=" + num4stars
 				+ ", num3stars=" + num3stars + ", num2stars=" + num2stars + ", num1stars=" + num1stars + "]";
 	}
 	
