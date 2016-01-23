@@ -3,6 +3,7 @@ public class Vehicle {
 
 	private String model;
 	private Make make;
+	private String strMake;
 	private int cost;
 	private int tagPrice;
 	
@@ -11,12 +12,23 @@ public class Vehicle {
 		this.model = model;
 		this.make = make;
 		this.cost = cost;
-		this.tagPrice = tagPrice;
-		
+		this.tagPrice = tagPrice;		
+	}
+	
+	public Vehicle(String model, String strMakeList, int cost, int tagPrice)
+	{
+		this.model = model;
+		this.strMake = strMakeList;
+		this.cost = cost;
+		this.tagPrice = tagPrice;		
 	}
 	
 	public String getModel() {
 		return model;
+	}
+
+	public String getMakeString() {
+		return strMake;
 	}
 
 	public Make getMake() {
@@ -38,7 +50,7 @@ public class Vehicle {
 
 	@Override
 	public String toString() {
-		return "Vehicle [model=" + model + ", make=" + make + ", cost=" + cost + ", tagPrice=" + tagPrice + "]";
+		return "Vehicle [model=" + model + ", make=" + strMake + ", cost=" + cost + ", tagPrice=" + tagPrice + "]";
 	}
 	
 
