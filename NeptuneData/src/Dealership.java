@@ -10,7 +10,7 @@ public class Dealership {
 	private int managerId;
 	private int operatingCosts;
 	private List<Promotion> promotions;
-	private String[] promoIds; 
+	private String promoIds; 
 	
 	public Dealership(int dealershipId, String city, String state, int zip, Employee manager, int operatingCosts,
 			List<Promotion> promotions) {
@@ -26,7 +26,7 @@ public class Dealership {
 	}
 
 	public Dealership(int dealershipId, String city, String state, int zip, int managerId, int operatingCosts,
-			String[] promotionList) {
+			String promotionList) {
 		this.dealershipId = dealershipId;
 		this.city = city;
 		this.state = state;
@@ -61,7 +61,7 @@ public class Dealership {
 	public List<Promotion> getPromotions() {
 		return promotions;
 	}
-	public String[] getPromoIds() {
+	public String getPromoIds() {
 		return promoIds;
 	}
 

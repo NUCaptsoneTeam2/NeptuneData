@@ -20,21 +20,20 @@ public class Application {
 			e.printStackTrace();
 		}		
 */
-		
-		try {
+
+		//CustomerSatisfaction
+/*		try {
 			ParseCustomerSatisfaction.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}	*/	
 
 		
 		// Dealership
 		try {
-			ParseDealership.parse();
+			ParseDealership.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-
+		}		
 	}
-
 }
