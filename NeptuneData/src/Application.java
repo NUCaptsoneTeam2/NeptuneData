@@ -6,7 +6,7 @@ public class Application {
 		// Uncomment to delete (reset) all raw_ data 
 		//Utils.truncateRawData();
 		
-		// ParseVehicleSale
+/*		// ParseVehicleSale
 		try {
 			ParseVehicleSale.loadRaw();
 		} catch (Exception e) {
@@ -35,5 +35,13 @@ public class Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
+*/
+		// Employee
+		try {
+			ParseEmployee.loadRaw();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+
 	}
 }
