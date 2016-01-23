@@ -49,23 +49,31 @@ public class ParseVehicleSale {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
+		String table = "raw_SalesTotals";
 
 		try {
 
-			String sqlTemplate = "insert into raw_SalesTotals (EmployeeID, MonthNum, " 
+			String sqlTemplate = "insert into %s (EmployeeID, MonthNum, " 
 					+ "NS100_Total, NS200_Total, NS300_Total, "
 					+ "NC150_Total, NC250_Total, NC350_Total, "
 					+ "NP400_Total, NP500_Total, NU600_Total, NU700_Total) "
 					+ "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
 
+			List<VehicleSale> items = ParseVehicleSale.parse();
+			
 			conn = ConnectionFactory.getConnection();  
 			stmt = conn.createStatement();
-
-			List<VehicleSale> items = ParseVehicleSale.parse();
+			
+			//handle case where data exists
+			rs = stmt.executeQuery(String.format("select count(*) from %s", table));
+			rs.next();
+			if (rs.getInt(1) > 0) {
+				stmt.execute(String.format("TRUNCATE table %s", table));
+			}
 
 			int i = 0;
 			while (i < items.size()) {
-				String SQL = String.format(sqlTemplate, items.get(i).getEmployeeId(), items.get(i).getMonthNum(), 
+				String SQL = String.format(sqlTemplate, table, items.get(i).getEmployeeId(), items.get(i).getMonthNum(), 
 						items.get(i).getNs100(), items.get(i).getNs200(), items.get(i).getNs300(), 
 						items.get(i).getNc150(), items.get(i).getNc250(), items.get(i).getNc350(), 
 						items.get(i).getNp400(), items.get(i).getNp500(), 
@@ -75,7 +83,7 @@ public class ParseVehicleSale {
 
 				//process in batches of 2000 records; this volume seemed about right after a few different tests
 				if (i % 2000 == 0 && i != 0){
-					System.out.println("Beginning commit " + i + "@ " + LocalDateTime.now().toString());
+					System.out.println("Beginning commit " + i + " @ " + LocalDateTime.now().toString());
 					stmt.executeBatch();					
 					stmt.clearBatch();
 					System.out.println("Completed @ " + LocalDateTime.now().toString());
@@ -83,10 +91,10 @@ public class ParseVehicleSale {
 				i++;
 			}
 
+			System.out.println("Beginning commit " + i + " @ " + LocalDateTime.now().toString());
 			//execute final batch			
 			stmt.executeBatch();
-
-			//stmt.executeUpdate(SQL);
+			System.out.println("Completed @ " + LocalDateTime.now().toString());
 
 		}
 

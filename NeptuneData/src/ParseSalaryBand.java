@@ -44,20 +44,28 @@ public class ParseSalaryBand {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
+		String table = "raw_SalaryBands";
 
 		try {
 
-			String sqlTemplate = "insert into raw_SalaryBands (BandID, Minimum, Maximum, PaidTimeOffDays, BonusPct) "
+			String sqlTemplate = "insert into %s (BandID, Minimum, Maximum, PaidTimeOffDays, BonusPct) "
 					+ "VALUES (\'%s\', %s, %s, %s, %s)";
-
-			conn = ConnectionFactory.getConnection();  
-			stmt = conn.createStatement();
 
 			List<SalaryBand> items = ParseSalaryBand.parse();
 
+			conn = ConnectionFactory.getConnection();  
+			stmt = conn.createStatement();
+			
+			//handle case where data exists
+			rs = stmt.executeQuery(String.format("select count(*) from %s", table));
+			rs.next();
+			if (rs.getInt(1) > 0) {
+				stmt.execute(String.format("TRUNCATE table %s", table));
+			}
+
 			int i = 0;
 			while (i < items.size()) {
-				String SQL = String.format(sqlTemplate, items.get(i).getBand(), items.get(i).getMinimum(), 
+				String SQL = String.format(sqlTemplate, table, items.get(i).getBand(), items.get(i).getMinimum(), 
 						items.get(i).getMaximum(), items.get(i).getPaidTimeOffDays(), 
 						items.get(i).getBonusPercentage());
 

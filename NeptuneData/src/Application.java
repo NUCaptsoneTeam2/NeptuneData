@@ -7,26 +7,26 @@ public class Application {
 		//Utils.truncateRawData();
 		
 		// ParseVehicleSale
-/*		try {
+		try {
 			ParseVehicleSale.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
+		}
 
 		// ParseSalaryBand
-/*		try {
+		try {
 			ParseSalaryBand.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
-*/
+
 
 		//CustomerSatisfaction
-/*		try {
+		try {
 			ParseCustomerSatisfaction.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	*/	
+		}		
 
 		
 		// Dealership

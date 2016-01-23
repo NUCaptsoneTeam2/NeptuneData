@@ -46,20 +46,28 @@ public class ParseDealership {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
+		String table = "raw_Dealerships";
 
 		try {
 
-			String sqlTemplate = "insert into raw_Dealerships (DealershipID, City, State, Zip, ManagerID, OperatingCosts, PromotionIDs) "
+			String sqlTemplate = "insert into %s (DealershipID, City, State, Zip, ManagerID, OperatingCosts, PromotionIDs) "
 					+ "VALUES (%s, \'%s\', \'%s\', %s, %s, %s, \'%s\')";
-
-			conn = ConnectionFactory.getConnection();  
-			stmt = conn.createStatement();
 
 			List<Dealership> items = ParseDealership.parse();
 
+			conn = ConnectionFactory.getConnection();  
+			stmt = conn.createStatement();
+			
+			//handle case where data exists
+			rs = stmt.executeQuery(String.format("select count(*) from %s", table));
+			rs.next();
+			if (rs.getInt(1) > 0) {
+				stmt.execute(String.format("TRUNCATE table %s", table));
+			}
+
 			int i = 0;
 			while (i < items.size()) {
-				String SQL = String.format(sqlTemplate, items.get(i).getDealershipId(), 
+				String SQL = String.format(sqlTemplate, table, items.get(i).getDealershipId(), 
 						items.get(i).getCity(), 
 						items.get(i).getState(), 
 						items.get(i).getZip(), 

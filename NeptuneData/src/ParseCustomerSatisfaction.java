@@ -46,20 +46,28 @@ public class ParseCustomerSatisfaction {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
+		String table = "raw_CustomerSatisfaction";
 
 		try {
 
-			String sqlTemplate = "insert into raw_CustomerSatisfaction (EmployeeID, Num5Stars, Num4Stars, Num3Stars, Num2Stars, Num1Stars) "
+			String sqlTemplate = "insert into %s (EmployeeID, Num5Stars, Num4Stars, Num3Stars, Num2Stars, Num1Stars) "
 					+ "VALUES (%s, %s, %s, %s, %s, %s)";
-
-			conn = ConnectionFactory.getConnection();  
-			stmt = conn.createStatement();
 
 			List<CustomerSatisfaction> items = ParseCustomerSatisfaction.parse();
 
+			conn = ConnectionFactory.getConnection();  
+			stmt = conn.createStatement();
+			
+			//handle case where data exists
+			rs = stmt.executeQuery(String.format("select count(*) from %s", table));
+			rs.next();
+			if (rs.getInt(1) > 0) {
+				stmt.execute(String.format("TRUNCATE table %s", table));
+			}
+
 			int i = 0;
 			while (i < items.size()) {
-				String SQL = String.format(sqlTemplate, items.get(i).getEmployeeId(), 
+				String SQL = String.format(sqlTemplate, table, items.get(i).getEmployeeId(), 
 						items.get(i).getNum5stars(), 
 						items.get(i).getNum4stars(), 
 						items.get(i).getNum3stars(), 
@@ -71,7 +79,7 @@ public class ParseCustomerSatisfaction {
 
 				//process in batches of 2000 records; this volume seemed about right after a few different tests
 				if (i % 2000 == 0 && i != 0){
-					System.out.println("Beginning commit " + i + "@ " + LocalDateTime.now().toString());
+					System.out.println("Beginning commit " + i + " @ " + LocalDateTime.now().toString());
 					stmt.executeBatch();					
 					stmt.clearBatch();
 					System.out.println("Completed @ " + LocalDateTime.now().toString());
@@ -79,10 +87,10 @@ public class ParseCustomerSatisfaction {
 				i++;
 			}
 
+			System.out.println("Beginning commit " + i + " @ " + LocalDateTime.now().toString());
 			//execute final batch			
 			stmt.executeBatch();
-
-			//stmt.executeUpdate(SQL);
+			System.out.println("Completed @ " + LocalDateTime.now().toString());
 
 		}
 
