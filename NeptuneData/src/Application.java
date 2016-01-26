@@ -6,7 +6,15 @@ public class Application {
 		// Uncomment to delete (reset) all raw_ data 
 		//Utils.truncateRawData();
 		
-/*		// ParseVehicleSale
+/*
+		// ParseVehicle
+		try {
+			ParseVehicle.loadRaw();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// ParseVehicleSale
 		try {
 			ParseVehicleSale.loadRaw();
 		} catch (Exception e) {
@@ -18,16 +26,14 @@ public class Application {
 			ParseSalaryBand.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
-
+		}
 
 		//CustomerSatisfaction
 		try {
 			ParseCustomerSatisfaction.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
-
+		}
 		
 		// Dealership
 		try {
@@ -41,7 +47,14 @@ public class Application {
 			ParseEmployee.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}
+
+		// Promotion
+		try {
+			ParsePromotion.loadRaw();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 */
 		try {
 			EmployeeCalc.run();
