@@ -50,8 +50,8 @@ public class Promotion {
 
 	@Override
 	public String toString() {
-		return "Promotion [promotionId=" + promotionId + ", months=" + months + ", cashbackBonus=" + cashBackBonus
-				+ ", make=" + make + "]";
+		return "Promotion [promotionId=" + promotionId + ", months=" + monthIds + ", cashbackBonus=" + cashBackBonus
+				+ ", make=" + makeIds + "]";
 	}
 
 
