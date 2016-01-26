@@ -49,13 +49,15 @@ public class Application {
 			e.printStackTrace();
 		}
 
+
 		// Promotion
 		try {
 			ParsePromotion.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-*/
+
+*/		
 		try {
 			EmployeeCalc.run();
 		} catch (Exception e) {
