@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 public class EmployeeCalc {
@@ -12,6 +13,9 @@ public class EmployeeCalc {
 		List<Employee> managers = Employee.getAllManagers();
 		employees = Employee.mergeCustomerSatisfactionRatings(employees, ratings);	
 		employees = Employee.mergeManagerList(employees, managers);
+		List<Dealership> dealerships = Dealership.getAllRaw();
+		//HashMap<Integer, Dealership> dlrMap = EmployeeCalc.getHmDealerships(dealerships);
+
 
 		// Calculate bonus before cust sat ratings
 		int i = 0;
@@ -24,7 +28,13 @@ public class EmployeeCalc {
 						(emp.getBaseSalary() <= band.getMaximum())
 						)
 				{
-					System.out.println(String.format("Bonus for employee %s is %s. (Range is %s - %s)", employees.get(i), bands.get(j).getBonusPercentage(), bands.get(j).getMinimum(), bands.get(j).getMaximum()));
+					//set base bonus on emp object
+					employees.get(i).setBonusPct(bands.get(j).getBonusPercentage());
+					System.out.println(String.format("Base bonus for employee %s is %s. (Range is %s - %s)", 
+							employees.get(i), 
+							bands.get(j).getBonusPercentage(), 
+							bands.get(j).getMinimum(), 
+							bands.get(j).getMaximum()));
 					break;
 				}
 				j++;
@@ -42,7 +52,6 @@ public class EmployeeCalc {
 				System.out.println(String.format("Employee %s (%s) is a manager (ineligible)", emp.getEmployeeId(), emp.getName()));
 			}
 			else {
-
 				CustomerSatisfaction sat = emp.getCustSat();
 				int pts5stars = sat.getNum5stars() * 2;
 				int pts4stars = sat.getNum4stars() * 1;
@@ -52,6 +61,9 @@ public class EmployeeCalc {
 
 				int totalPoints = pts5stars + pts4stars + pts2stars + pts1stars; 
 
+				//set base bonus on emp object
+				employees.get(i).setBonusPoints(totalPoints);
+
 				System.out.println(String.format("Employee %s (%s) earned %s points (%s + %s + 0 + %s + %s = %s)", 
 						emp.getEmployeeId(), 
 						emp.getName(), 
@@ -60,5 +72,50 @@ public class EmployeeCalc {
 			}
 			i++;
 		}
+
+		// Assign employees/managers to dealerships
+		i = 0; //reset i
+		while (i < dealerships.size()) {
+			int j = 0;
+			Dealership dealer = dealerships.get(i);
+			int dealerId = dealer.getDealershipId();
+			
+			while (j < employees.size()) {
+				Employee emp = employees.get(j);
+				if (dealerId != emp.getDealershipId())
+					break;
+
+				if (emp.getIsManager()) {
+					dealerships.get(i).setManager(emp);
+					System.out.println(String.format("Employee %s (%s) is a manager at dealership %s", 
+							emp.getEmployeeId(), 
+							emp.getName(), 
+							dealer.getManagerId()));
+				}
+				else {
+					dealerships.get(i).addEmployee(emp);
+					System.out.println(String.format("Employee %s (%s) added to dealership %s", 
+							emp.getEmployeeId(), 
+							emp.getName(), 
+							dealer.getDealershipId()));
+				}
+				j++;
+			}
+			i++;
+		}
+
 	}
+
+
+
+/*	private static HashMap<Integer, Dealership> getHmDealerships(List<Dealership> dealerships){
+		HashMap<Integer, Dealership> dlrMap = new HashMap<Integer, Dealership>();
+		int i=0;
+		while (dealerships.size() > i){
+			dlrMap.put(dealerships.get(i).getDealershipId(), dealerships.get(i));
+			i++;
+		}
+		return dlrMap;
+	}*/
+
 }

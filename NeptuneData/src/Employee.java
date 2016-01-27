@@ -13,6 +13,8 @@ public class Employee {
 	private int dealershipId;
 	private CustomerSatisfaction custSat;
 	private Boolean isManager = false;
+	private float bonusPct = 0;
+	private float bonusPoints = 0;
 
 	public Employee(String name, int employeeId, int baseSalary, Dealership dealership) {
 		this.name = name;
@@ -104,7 +106,7 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee [name=" + name + ", employeeId=" + employeeId + ", baseSalary=" + baseSalary + ", dealership="
-				+ dealershipId + "]";
+				+ dealershipId + ", bonusPct=" + bonusPct + ", bonusPoints=" + "]";
 	}
 
 	public Boolean getIsManager() {
@@ -113,6 +115,22 @@ public class Employee {
 	
 	private void setIsManager(){
 		this.isManager = true;
+	}
+	
+	public void setBonusPct(float pct){
+		this.bonusPct = pct;
+	}
+	
+	public void setBonusPoints(int points){
+		this.bonusPoints = points;
+	}
+
+	public float getBonusPct() {
+		return bonusPct;
+	}
+
+	public float getBonusPoints() {
+		return bonusPoints;
 	}
 	
 	public static List<Employee> getAllRaw() {
@@ -126,7 +144,7 @@ public class Employee {
 
 		try {
 
-			String sql = "select * from %s";
+			String sql = "select * from %s order by dealershipid, employeeid ASC";
 
 			conn = ConnectionFactory.getConnection();  
 			stmt = conn.createStatement();
