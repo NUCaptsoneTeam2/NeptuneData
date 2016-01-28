@@ -14,7 +14,8 @@ public class Employee {
 	private CustomerSatisfaction custSat;
 	private Boolean isManager = false;
 	private float bonusPct = 0;
-	private float bonusPoints = 0;
+	private float bonusPctSatisfaction = 0;
+	private int bonusPoints = 0;
 
 	public Employee(String name, int employeeId, int baseSalary, Dealership dealership) {
 		this.name = name;
@@ -106,7 +107,7 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee [name=" + name + ", employeeId=" + employeeId + ", baseSalary=" + baseSalary + ", dealership="
-				+ dealershipId + ", bonusPct=" + bonusPct + ", bonusPoints=" + "]";
+				+ dealershipId + ", bonusPct=" + bonusPct + ", bonusPoints=" + bonusPoints + ", bonusPctSatisfaction=" + bonusPctSatisfaction + "]";
 	}
 
 	public Boolean getIsManager() {
@@ -121,6 +122,10 @@ public class Employee {
 		this.bonusPct = pct;
 	}
 	
+	public void setBonusPctSatisfaction(float pct){
+		this.bonusPctSatisfaction = pct;
+	}
+
 	public void setBonusPoints(int points){
 		this.bonusPoints = points;
 	}
@@ -129,7 +134,11 @@ public class Employee {
 		return bonusPct;
 	}
 
-	public float getBonusPoints() {
+	public float getBonusPctSatisfaction() {
+		return bonusPctSatisfaction;
+	}
+
+	public int getBonusPoints() {
 		return bonusPoints;
 	}
 	

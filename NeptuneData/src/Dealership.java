@@ -2,10 +2,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class Dealership {
 
@@ -79,6 +76,14 @@ public class Dealership {
 		employees.add(emp);
 	}
 
+	public void addEmployees(List<Employee> ees){
+		employees = ees;
+	}
+
+	public List<Employee> getEmployees(){
+		return employees;
+	}
+	
 	@Override
 	public String toString() {
 		return "Dealership [dealershipId=" + dealershipId + ", city=" + city + ", state=" + state + ", zip=" + zip
