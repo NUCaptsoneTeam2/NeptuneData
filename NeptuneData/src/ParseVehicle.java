@@ -28,12 +28,12 @@ public class ParseVehicle {
 
             Vehicle item = new Vehicle(model, make, cost, tagPrice);
             list.add(item);
-
-            //Write to console
-            System.out.println(item.toString());
-
         }
         br.close();
+
+        //Write to console
+        list.forEach(System.out::println);
+        
         return list;
     }
 
@@ -63,7 +63,7 @@ public class ParseVehicle {
 
             int i = 0;
             while (i < items.size()) {
-                String SQL = String.format(sqlTemplate, items.get(i).getModel(), items.get(i).getMake(),
+                String SQL = String.format(sqlTemplate, table, items.get(i).getModel(), items.get(i).getMake(),
                         items.get(i).getCost(), items.get(i).getTagPrice());
 
                 stmt.addBatch(SQL);

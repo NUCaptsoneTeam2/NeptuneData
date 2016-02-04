@@ -29,12 +29,12 @@ public class ParseEmployee {
 
 			Employee item = new Employee(name, employeeId, baseSalary, dealershiId);
 			list.add(item);
-
-			//Write to console
-			System.out.println(item.toString());
-
 		}
 		br.close();
+
+        //Write to console
+        list.forEach(System.out::println);
+        
 		return list;
 	}
 

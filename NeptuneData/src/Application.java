@@ -6,45 +6,46 @@ public class Application {
 		// Uncomment to delete (reset) all raw_ data 
 		//Utils.truncateRawData();
 		
-/*
+
 		// ParseVehicle
 		try {
-			ParseVehicle.loadRaw();
+			ParseVehicle.parse();
+			//ParseVehicle.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// ParseVehicleSale
 		try {
-			ParseVehicleSale.loadRaw();
+			ParseVehicleSale.parse();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// ParseSalaryBand
 		try {
-			ParseSalaryBand.loadRaw();
+			ParseSalaryBand.parse();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		//CustomerSatisfaction
 		try {
-			ParseCustomerSatisfaction.loadRaw();
+			ParseCustomerSatisfaction.parse();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		// Dealership
 		try {
-			ParseDealership.loadRaw();
+			ParseDealership.parse();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
 
 		// Employee
 		try {
-			ParseEmployee.loadRaw();
+			ParseEmployee.parse();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -57,7 +58,7 @@ public class Application {
 			e.printStackTrace();
 		}
 
-*/		
+		
 		try {
 			EmployeeCalc.run();
 		} catch (Exception e) {

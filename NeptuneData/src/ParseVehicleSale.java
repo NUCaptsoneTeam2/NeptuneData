@@ -40,6 +40,10 @@ public class ParseVehicleSale {
 			list.add(item);
 		}
 		br.close();
+
+        //Write to console
+        list.forEach(System.out::println);
+        
 		return list;
 	}
 

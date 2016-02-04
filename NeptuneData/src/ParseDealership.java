@@ -31,12 +31,12 @@ public class ParseDealership {
 	       
 	       Dealership item = new Dealership(id, city, state, zip, managerId, operatingCosts, promosRaw);
 	       list.add(item);
-		
-	       //Write to console
-	       System.out.println(item.toString());
-
 	   }
 	   br.close();
+
+       //Write to console
+       list.forEach(System.out::println);
+       
 	   return list;
 	}
 	

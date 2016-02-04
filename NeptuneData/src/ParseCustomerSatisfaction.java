@@ -29,14 +29,15 @@ public class ParseCustomerSatisfaction {
 	       int num2stars = Integer.parseInt(fields[4]);
 	       int num1stars = Integer.parseInt(fields[5]);
 	       
-	       CustomerSatisfaction item = new CustomerSatisfaction(employeeId, num5stars, num4stars, num3stars, num2stars, num1stars);
+	       CustomerSatisfaction item = new CustomerSatisfaction(employeeId, 
+	    		   num5stars, num4stars, num3stars, num2stars, num1stars);
 	       list.add(item);
-		
-	       //Write to console
-	       System.out.println(item.toString());
-
 	   }
 	   br.close();
+
+       //Write to console
+       list.forEach(System.out::println);
+       
 	   return list;
 	}
 

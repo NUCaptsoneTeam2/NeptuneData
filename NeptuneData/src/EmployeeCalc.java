@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 //import java.util.HashMap;
 import java.util.List;
@@ -98,19 +97,23 @@ public class EmployeeCalc {
 			dealer.addEmployees(EmployeeCalc.filterEmployeesByDealershipId(employees, dealer.getDealershipId()));
 
 		}
-		
-/*		for (Dealership dealer : dealerships) {
-			if (dealer.getDealershipId() == dealershipId)
-				Collections.sort(dealer.getEmployees(), new Comparator()) {
-		                (i2.intValue() > i1.intValue()) ? 1 : -1;
-		            }
-		}*/
-		
-	}
+
+
+		for (Dealership dealer : dealerships) {
+			//sorting algorithm, found in comments on http://www.mkyong.com/java8/java-8-lambda-comparator-example/
+			dealer.getEmployees().sort(Comparator.comparing(Employee::getBonusPctSatisfaction).reversed());
+			
+/*			for (Employee emp : dealer.getEmployees()) {
+				
+			}
+*/		}
+
+
+		}
 
 
 
-	/*	private static List<Dealership> filterDealerships(List<Dealership> dealerships, int dealershipId) {
+		/*	private static List<Dealership> filterDealerships(List<Dealership> dealerships, int dealershipId) {
 
 		List<Dealership> list = new ArrayList<Dealership>();
 
@@ -121,12 +124,12 @@ public class EmployeeCalc {
 		return list;
 	}*/
 
-	private static List<Employee> filterEmployeesByDealershipId(List<Employee> employees, int dealershipId) {
-		List<Employee> list = new ArrayList<Employee>();
-		for (Employee emp : employees) {
-			if (emp.getDealershipId() == dealershipId)
-				list.add(emp);
+		private static List<Employee> filterEmployeesByDealershipId(List<Employee> employees, int dealershipId) {
+			List<Employee> list = new ArrayList<Employee>();
+			for (Employee emp : employees) {
+				if (emp.getDealershipId() == dealershipId)
+					list.add(emp);
+			}
+			return list;
 		}
-		return list;
 	}
-}
