@@ -46,7 +46,7 @@ public class ParsePromotion {
 
         try {
 
-            String sqlTemplate = "insert into %s (promotionID, month, cashbackBonus, vehicleClass) "
+            String sqlTemplate = "insert into %s (promotionName, month, cashbackBonus, vehicleClass) "
                     + "VALUES (\'%s\', %s, %s, \'%s\')";
 
             List<Promotion> items = ParsePromotion.parse();
