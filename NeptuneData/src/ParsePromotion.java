@@ -22,18 +22,18 @@ public class ParsePromotion {
 
             //Create local variables for fields
             String promotionID = fields[0];
-            String month = fields[1];
+            int month = Integer.parseInt(fields[1]);
             int cashBackBonus = Integer.parseInt(fields[2]);
             String vehicleMake = fields[3];
 
             Promotion item = new Promotion(promotionID, month, cashBackBonus, vehicleMake);
             list.add(item);
-
-            //Write to console
-            System.out.println(item.toString());
-
         }
         br.close();
+
+        //Write to console
+        list.forEach(System.out::println);
+        
         return list;
     }
 
@@ -42,12 +42,12 @@ public class ParsePromotion {
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
-        String table = "raw_Promotions";
+        String table = "Promotions";
 
         try {
 
-            String sqlTemplate = "insert into %s (PromotionID, MonthNums, CashBackBonus, VehicleMake) "
-                    + "VALUES (\'%s\', \'%s\', %s, \'%s\')";
+            String sqlTemplate = "insert into %s (promotionID, month, cashbackBonus, vehicleClass) "
+                    + "VALUES (\'%s\', %s, %s, \'%s\')";
 
             List<Promotion> items = ParsePromotion.parse();
 
@@ -63,8 +63,8 @@ public class ParsePromotion {
 
             int i = 0;
             while (i < items.size()) {
-                String SQL = String.format(sqlTemplate, table, items.get(i).getPromotionId(), items.get(i).getMonthIds(),
-                        items.get(i).getCashbackBonus(), items.get(i).getMakeIDs());
+                String SQL = String.format(sqlTemplate, table, items.get(i).getPromotionId(), items.get(i).getMonth(),
+                        items.get(i).getCashbackBonus(), items.get(i).getMake());
 
                 stmt.addBatch(SQL);
                 i++;
@@ -72,7 +72,6 @@ public class ParsePromotion {
 
             stmt.executeBatch();
             stmt.clearBatch();
-            //stmt.executeUpdate(SQL);
 
         }
 
