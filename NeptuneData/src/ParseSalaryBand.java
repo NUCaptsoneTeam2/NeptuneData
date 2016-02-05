@@ -29,12 +29,12 @@ public class ParseSalaryBand {
 	       
 	       SalaryBand item = new SalaryBand(band, min, max, pdTimeOff, pct);
 	       list.add(item);
-		
-	       //Write to console
-	       System.out.println(item.toString());
-
 	   }
 	   br.close();
+
+       //Write to console
+       list.forEach(System.out::println);
+       
 	   return list;
 	}
 
@@ -44,11 +44,11 @@ public class ParseSalaryBand {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		String table = "raw_SalaryBands";
+		String table = "SalaryBand";
 
 		try {
 
-			String sqlTemplate = "insert into %s (BandID, Minimum, Maximum, PaidTimeOffDays, BonusPct) "
+			String sqlTemplate = "insert into %s (bandID, salMin, salMax, paidTimeOff, bonusPercentage) "
 					+ "VALUES (\'%s\', %s, %s, %s, %s)";
 
 			List<SalaryBand> items = ParseSalaryBand.parse();
@@ -75,7 +75,6 @@ public class ParseSalaryBand {
 
 			stmt.executeBatch();					
 			stmt.clearBatch();
-			//stmt.executeUpdate(SQL);
 
 		}
 
