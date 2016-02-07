@@ -3,12 +3,12 @@ public class Application {
 
 	public static void main(String[] args) {
 
-		// Data
+/*		// Data
 		try {
 			Data.loadBaseData();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 
 		// Calculations
 		try {

@@ -1,4 +1,3 @@
-import java.util.List;
 
 public class Data {
 
@@ -26,15 +25,6 @@ public class Data {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
-		}		
-		
-		// Parse customer satisfaction ratings
-		List<CustomerSatisfaction> ratings; 
-		try {
-			ratings = ParseCustomerSatisfaction.parse();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
 		}
 
 		// Load raw Employee data
@@ -44,18 +34,6 @@ public class Data {
 			e.printStackTrace();
 		}
 		
-		// Load non-calculated data into the Employees table
-		List<Employee> employees = Employee.getAllBase();
-		List<SalaryBand> bands = SalaryBand.getAllRaw();
-		
-		//Load Customer Satisfaction ratings
-		employees = Employee.mergeCustomerSatisfactionRatings(employees, ratings);
-		ParseEmployee.updateRatings(employees);
-
-		//Load Salary Band data into Employee
-		employees = Employee.mergeSalaryBands(employees, bands);
-		ParseEmployee.updateSalaryBands(employees);
-
 		
 		// Load raw Dealership data
 		try {
@@ -64,13 +42,16 @@ public class Data {
 			e.printStackTrace();
 		}
 
-		// Load raw VehicleSales data
+		
+		//WARNING: Commented for now because it takes 20-25 minutes to complete. 
+/*
+ 		// Load raw VehicleSales data
 		try {
 			ParseVehicleSale.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
-
+*/
 		
 	}
 }

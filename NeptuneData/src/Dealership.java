@@ -16,7 +16,7 @@ public class Dealership {
 	private List<String> promotionNames = new ArrayList<String>();
 	private String promoIds; 
 	private List<Employee> employees = new ArrayList<Employee>(); 
-	
+
 	public Dealership(int dealershipId, String city, String state, int zip, int managerId, int operatingCosts,
 			String promotionList) {
 		this.dealershipId = dealershipId;
@@ -26,13 +26,22 @@ public class Dealership {
 		this.managerId = managerId;
 		this.operatingCosts = operatingCosts;
 		this.promoIds = promotionList;
-		
+
 		for (String promoName : promoIds.split(";")) {
 			promotionNames.add(promoName);
 		}
-		
+
 	}
-	
+
+	public Dealership(int dealershipId, String city, String state, int zip, int managerId, int operatingCosts) {
+		this.dealershipId = dealershipId;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.managerId = managerId;
+		this.operatingCosts = operatingCosts;
+	}
+
 	public int getDealershipId() {
 		return dealershipId;
 	}
@@ -74,32 +83,32 @@ public class Dealership {
 	public List<Employee> getEmployees(){
 		return employees;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Dealership [dealershipId=" + dealershipId + ", city=" + city + ", state=" + state + ", zip=" + zip
 				+ ", manager=" + managerId + ", operatingCosts=" + operatingCosts + ", promotions=" + promoIds + "]";
 	}
-	
-	public static List<Dealership> getAllRaw() {
+
+	public static List<Dealership> getAllBase() {
 
 		// Declare the JDBC objects.
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		String table = "raw_Dealerships";
+		String table = "Dealerships";
 		List<Dealership> list = new ArrayList<Dealership>();
 
 		try {
 
-			String sql = "select * from %s order by dealershipid ASC";
+			String sql = "select dealershipID, city, state, zipCode, managerID, operatingCosts from %s order by dealershipid ASC";
 
 			conn = ConnectionFactory.getConnection();  
 			stmt = conn.createStatement();
 
 			rs = stmt.executeQuery(String.format(sql, table));
 			while (rs.next()) {
-				Dealership item = new Dealership(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getString(7));
+				Dealership item = new Dealership(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6));
 				list.add(item);
 			}
 
@@ -118,5 +127,5 @@ public class Dealership {
 
 		return list;
 	}
-	
+
 }

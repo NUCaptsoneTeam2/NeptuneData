@@ -246,7 +246,7 @@ public class Employee {
 
 		try {
 
-			String sql = "select * from %s";
+			String sql = "select name, employeeID, baseSalary, dealershipID  from %s order by dealershipid, employeeid ASC";
 
 			conn = ConnectionFactory.getConnection();  
 			stmt = conn.createStatement();

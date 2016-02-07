@@ -55,7 +55,7 @@ public class SalaryBand {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		String table = "raw_SalaryBands";
+		String table = "SalaryBand";
 		List<SalaryBand> list = new ArrayList<SalaryBand>();
 
 		try {

@@ -13,29 +13,38 @@ public class EmployeeCalc {
 		List<SalaryBand> bands = SalaryBand.getAllRaw();
 		List<Employee> managers = Employee.getAllManagers();
 		employees = Employee.mergeManagerList(employees, managers);
-		List<Dealership> dealerships = Dealership.getAllRaw();
-
-		//Calculate bonus before cust sat ratings
-		for (Employee emp : employees) {
-			for (SalaryBand band : bands) {
-				if ((emp.getBaseSalary() >= band.getMinimum()) && 
-						(emp.getBaseSalary() <= band.getMaximum())
-						)
-				{
-					//set base bonus on emp object
-					emp.setBonusPct(band.getBonusPercentage());
-					System.out.println(String.format("Base bonus for employee #%s (%s) is %s; (Range is %s - %s)", 
-							emp.getEmployeeId(),
-							emp.getName(),
-							emp.getBonusPct(),
-							band.getMinimum(), 
-							band.getMaximum()));
-					break;
-				}
-			}
+		List<Dealership> dealerships = Dealership.getAllBase();
+		List<CustomerSatisfaction> ratings; 
+		try {
+			ratings = ParseCustomerSatisfaction.parse();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
 		}
 
-				
+		//More prep of ratigs and salary band data on the employees list
+		employees = Employee.mergeCustomerSatisfactionRatings(employees, ratings);
+		employees = Employee.mergeSalaryBands(employees, bands);
+
+		//Save/update DB with calculations
+		calculateAndStoreCustomerSatisfactionRatings(employees);
+		calculateAndStoreSalaryBands(employees);
+		
+		//this how far we've gotten with programming calculations; method works but is not yet complete
+		calculateBonusWithCustomerRatings(employees, dealerships);
+
+	}
+
+
+	static private void calculateAndStoreCustomerSatisfactionRatings(List<Employee> employees) {
+		ParseEmployee.updateRatings(employees);
+	}
+	
+	static private void calculateAndStoreSalaryBands(List<Employee> employees) {
+		ParseEmployee.updateSalaryBands(employees);
+	}
+	
+	static private void calculateBonusWithCustomerRatings(List<Employee> employees, List<Dealership> dealerships) {
 		//Calculate bonus including cust sat ratings
 		for (Employee emp : employees) {
 			//RULE: If employee is a manager, do not include in calc.
@@ -101,33 +110,17 @@ public class EmployeeCalc {
 			//sorting algorithm, found in comments on http://www.mkyong.com/java8/java-8-lambda-comparator-example/
 			dealer.getEmployees().sort(Comparator.comparing(Employee::getBonusPctSatisfaction).reversed());
 			
-/*			for (Employee emp : dealer.getEmployees()) {
-				
-			}
-*/		}
+			//TODO: complete bonus logic for picking top [n] earners
 
-
-		}
-
-
-
-		/*	private static List<Dealership> filterDealerships(List<Dealership> dealerships, int dealershipId) {
-
-		List<Dealership> list = new ArrayList<Dealership>();
-
-		for (Dealership dealer : dealerships) {
-			if (dealer.getDealershipId() == dealershipId)
-				list.add(dealer);
-		}
-		return list;
-	}*/
-
-		private static List<Employee> filterEmployeesByDealershipId(List<Employee> employees, int dealershipId) {
-			List<Employee> list = new ArrayList<Employee>();
-			for (Employee emp : employees) {
-				if (emp.getDealershipId() == dealershipId)
-					list.add(emp);
-			}
-			return list;
 		}
 	}
+	
+	private static List<Employee> filterEmployeesByDealershipId(List<Employee> employees, int dealershipId) {
+		List<Employee> list = new ArrayList<Employee>();
+		for (Employee emp : employees) {
+			if (emp.getDealershipId() == dealershipId)
+				list.add(emp);
+		}
+		return list;
+	}
+}
