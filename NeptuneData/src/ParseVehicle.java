@@ -11,7 +11,7 @@ public class ParseVehicle {
 
     private static String path = Constants.FILE_CARMODELS;
 
-    public static List<Vehicle> parse() throws NumberFormatException, IOException {
+    private static List<Vehicle> parse() throws NumberFormatException, IOException {
 
         List<Vehicle> list = new ArrayList<Vehicle>();
 
@@ -42,11 +42,11 @@ public class ParseVehicle {
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
-        String table = "raw_SalesTotals";
+        String table = "Vehicles";
 
         try {
 
-            String sqlTemplate = "insert into %s (Model, Make, Cost, TagPrice) "
+            String sqlTemplate = "insert into %s (modelID, vehicleClass, cost, tagPrice) "
                     + "VALUES (\'%s\', \'%s\', %s, %s)";
 
             List<Vehicle> items = ParseVehicle.parse();
@@ -72,27 +72,18 @@ public class ParseVehicle {
 
             stmt.executeBatch();
             stmt.clearBatch();
-            //stmt.executeUpdate(SQL);
-
         }
 
-        // Handle errors.
-        catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (null != rs) try {
-                rs.close();
-            } catch (Exception e) {
-            }
-            if (null != stmt) try {
-                stmt.close();
-            } catch (Exception e) {
-            }
-            if (null != conn) try {
-                conn.close();
-            } catch (Exception e) {
-            }
-        }
+		// Handle errors.
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			if (null != rs) try { rs.close(); } catch(Exception e) {}
+			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
+			if (null != conn) try { conn.close(); } catch(Exception e) {}
+		}
 
     }
 }

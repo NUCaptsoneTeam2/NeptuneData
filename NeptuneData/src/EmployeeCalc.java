@@ -9,11 +9,9 @@ public class EmployeeCalc {
 	public static void run() throws NumberFormatException, IOException 
 	{
 		//Prepare objects
-		List<Employee> employees = Employee.getAllRaw();
+		List<Employee> employees = Employee.getAllBase();
 		List<SalaryBand> bands = SalaryBand.getAllRaw();
-		List<CustomerSatisfaction> ratings = CustomerSatisfaction.getAllRaw();
 		List<Employee> managers = Employee.getAllManagers();
-		employees = Employee.mergeCustomerSatisfactionRatings(employees, ratings);	
 		employees = Employee.mergeManagerList(employees, managers);
 		List<Dealership> dealerships = Dealership.getAllRaw();
 
@@ -26,11 +24,10 @@ public class EmployeeCalc {
 				{
 					//set base bonus on emp object
 					emp.setBonusPct(band.getBonusPercentage());
-					System.out.println(String.format("Base bonus for employee %s is %s; satisfaction bonus is %s; total points is %s. (Range is %s - %s)", 
-							emp, 
+					System.out.println(String.format("Base bonus for employee #%s (%s) is %s; (Range is %s - %s)", 
+							emp.getEmployeeId(),
+							emp.getName(),
 							emp.getBonusPct(),
-							emp.getBonusPctSatisfaction(),
-							emp.getBonusPoints(),
 							band.getMinimum(), 
 							band.getMaximum()));
 					break;
@@ -38,6 +35,7 @@ public class EmployeeCalc {
 			}
 		}
 
+				
 		//Calculate bonus including cust sat ratings
 		for (Employee emp : employees) {
 			//RULE: If employee is a manager, do not include in calc.

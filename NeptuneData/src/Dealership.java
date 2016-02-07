@@ -13,23 +13,10 @@ public class Dealership {
 	private Employee manager;
 	private int managerId;
 	private int operatingCosts;
-	private List<Promotion> promotions = new ArrayList<Promotion>();
+	private List<String> promotionNames = new ArrayList<String>();
 	private String promoIds; 
 	private List<Employee> employees = new ArrayList<Employee>(); 
 	
-	public Dealership(int dealershipId, String city, String state, int zip, Employee manager, int operatingCosts,
-			List<Promotion> promotions) {
-		this.dealershipId = dealershipId;
-		this.city = city;
-		this.state = state;
-		this.zip = zip;
-		this.manager = manager;
-		//TODO: do we need to set managerId for any reason?
-		//this.managerId = this.manager.
-		this.operatingCosts = operatingCosts;
-		this.promotions = promotions;
-	}
-
 	public Dealership(int dealershipId, String city, String state, int zip, int managerId, int operatingCosts,
 			String promotionList) {
 		this.dealershipId = dealershipId;
@@ -39,6 +26,10 @@ public class Dealership {
 		this.managerId = managerId;
 		this.operatingCosts = operatingCosts;
 		this.promoIds = promotionList;
+		
+		for (String promoName : promoIds.split(";")) {
+			promotionNames.add(promoName);
+		}
 		
 	}
 	
@@ -66,8 +57,8 @@ public class Dealership {
 	public int getOperatingCosts() {
 		return operatingCosts;
 	}
-	public List<Promotion> getPromotions() {
-		return promotions;
+	public List<String> getPromotions() {
+		return promotionNames;
 	}
 	public String getPromoIds() {
 		return promoIds;

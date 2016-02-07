@@ -12,7 +12,7 @@ public class ParseVehicleSale {
 
 	private static String path = Constants.FILE_AUTOSALES;
 
-	public static List<VehicleSale> parse() throws NumberFormatException, IOException
+	private static List<VehicleSale> parse() throws NumberFormatException, IOException
 	{
 		List<VehicleSale> list = new ArrayList<VehicleSale>();
 		BufferedReader br = new BufferedReader(new FileReader(path));
@@ -41,9 +41,9 @@ public class ParseVehicleSale {
 		}
 		br.close();
 
-        //Write to console
-        list.forEach(System.out::println);
-        
+		//Write to console
+		list.forEach(System.out::println);
+
 		return list;
 	}
 
@@ -53,18 +53,18 @@ public class ParseVehicleSale {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		String table = "raw_SalesTotals";
+		String table = "VehicleSales";
 
 		try {
 
-			String sqlTemplate = "insert into %s (EmployeeID, MonthNum, " 
-					+ "NS100_Total, NS200_Total, NS300_Total, "
-					+ "NC150_Total, NC250_Total, NC350_Total, "
-					+ "NP400_Total, NP500_Total, NU600_Total, NU700_Total) "
-					+ "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
+			String sqlTemplate = "insert into %s (employeeID, month, modelID, dealershipID, totalSalesCount, totalCost) " 
+					+ "VALUES (%s, %s, \'%s\', %s, %s, %s)";
 
-			List<VehicleSale> items = ParseVehicleSale.parse();
+			List<VehicleSale> items = ParseVehicleSale.parse();			
+			List<Employee> employees = Employee.getAllBase();
 			
+			items = VehicleSale.mergeDealershipId(items, employees);
+
 			conn = ConnectionFactory.getConnection();  
 			stmt = conn.createStatement();
 			
@@ -75,31 +75,55 @@ public class ParseVehicleSale {
 				stmt.execute(String.format("TRUNCATE table %s", table));
 			}
 
-			int i = 0;
-			while (i < items.size()) {
-				String SQL = String.format(sqlTemplate, table, items.get(i).getEmployeeId(), items.get(i).getMonthNum(), 
-						items.get(i).getNs100(), items.get(i).getNs200(), items.get(i).getNs300(), 
-						items.get(i).getNc150(), items.get(i).getNc250(), items.get(i).getNc350(), 
-						items.get(i).getNp400(), items.get(i).getNp500(), 
-						items.get(i).getNu600(), items.get(i).getNu700());
+			//TODO: if time, this needs to be refactored to be less hard-coded...ugh
+			Vehicle ns100 = Vehicle.getByModelID("ns100");
+			Vehicle ns200 = Vehicle.getByModelID("ns200");
+			Vehicle ns300 = Vehicle.getByModelID("ns300");
+			Vehicle nc150 = Vehicle.getByModelID("nc150");
+			Vehicle nc250 = Vehicle.getByModelID("nc250");
+			Vehicle nc350 = Vehicle.getByModelID("nc350");
+			Vehicle np400 = Vehicle.getByModelID("np400");
+			Vehicle np500 = Vehicle.getByModelID("np500");
+			Vehicle nu600 = Vehicle.getByModelID("nu600");
+			Vehicle nu700 = Vehicle.getByModelID("nu700");
 
-				stmt.addBatch(SQL);
+			int i=0;
+			for (VehicleSale item : items) {
+				String sql1 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), ns100.getModel(), item.getDealershipId(), item.getNs100(), (item.getNs100() * ns100.getCost()));
+				String sql2 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), ns200.getModel(), item.getDealershipId(), item.getNs200(), (item.getNs200() * ns200.getCost()));
+				String sql3 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), ns300.getModel(), item.getDealershipId(), item.getNs300(), (item.getNs300() * ns300.getCost()));
+				String sql4 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), nc150.getModel(), item.getDealershipId(), item.getNc150(), (item.getNc150() * nc150.getCost()));
+				String sql5 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), nc250.getModel(), item.getDealershipId(), item.getNc250(), (item.getNc250() * nc250.getCost()));
+				String sql6 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), nc350.getModel(), item.getDealershipId(), item.getNc350(), (item.getNc350() * nc350.getCost()));
+				String sql7 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), np400.getModel(), item.getDealershipId(), item.getNp400(), (item.getNp400() * np400.getCost()));
+				String sql8 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), np500.getModel(), item.getDealershipId(), item.getNp500(), (item.getNp500() * np500.getCost()));
+				String sql9 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), nu600.getModel(), item.getDealershipId(), item.getNu600(), (item.getNu600() * nu600.getCost()));
+				String sql10 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), nu700.getModel(), item.getDealershipId(), item.getNu700(), (item.getNu700() * nu700.getCost()));
+
+				stmt.addBatch(sql1);
+				stmt.addBatch(sql2);
+				stmt.addBatch(sql3);
+				stmt.addBatch(sql4);
+				stmt.addBatch(sql5);
+				stmt.addBatch(sql6);
+				stmt.addBatch(sql7);
+				stmt.addBatch(sql8);
+				stmt.addBatch(sql9);
+				stmt.addBatch(sql10);
 
 				//process in batches of 2000 records; this volume seemed about right after a few different tests
 				if (i % 2000 == 0 && i != 0){
-					System.out.println("Beginning commit " + i + " @ " + LocalDateTime.now().toString());
-					stmt.executeBatch();					
+					System.out.println("Beginning commit " + i*10 + " @ " + LocalDateTime.now().toString());
+					stmt.executeBatch();
 					stmt.clearBatch();
 					System.out.println("Completed @ " + LocalDateTime.now().toString());
 				}
 				i++;
 			}
-
-			System.out.println("Beginning commit " + i + " @ " + LocalDateTime.now().toString());
+			System.out.println("Beginning commit " + i*10 + " @ " + LocalDateTime.now().toString());
 			//execute final batch			
 			stmt.executeBatch();
 			System.out.println("Completed @ " + LocalDateTime.now().toString());
-
 		}
 
 		// Handle errors.

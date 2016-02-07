@@ -6,23 +6,25 @@ import java.util.List;
 
 public class Employee {
 
-	private String name;
 	private int employeeId;
+	private String name;
 	private int baseSalary;
-	private Dealership dealership;
 	private int dealershipId;
-	private CustomerSatisfaction custSat;
-	private Boolean isManager = false;
+	private int rating1;
+	private int rating2;
+	private int rating3;
+	private int rating4;
+	private int rating5;
+	private String bandID;
+	private int baseSalaryIncrease;
+	private int newBaseSalary;
+	private int newBandID;
 	private float bonusPct = 0;
 	private float bonusPctSatisfaction = 0;
 	private int bonusPoints = 0;
-
-	public Employee(String name, int employeeId, int baseSalary, Dealership dealership) {
-		this.name = name;
-		this.employeeId = employeeId;
-		this.baseSalary = baseSalary;
-		this.dealership = dealership;
-	}
+	private int bonusAmount = 0;
+	private CustomerSatisfaction custSat;
+	private Boolean isManager = false;
 
 	public Employee(String name, int employeeId, int baseSalary, int dealershipId) {
 		this.name = name;
@@ -43,16 +45,57 @@ public class Employee {
 		return baseSalary;
 	}
 
-	public Dealership getDealership() {
-		return dealership;
-	}
-
 	public int getDealershipId() {
 		return dealershipId;
 	}
 
+	public int getRating1() {
+		return rating1;
+	}
+
+	public int getRating2() {
+		return rating2;
+	}
+
+	public int getRating3() {
+		return rating3;
+	}
+
+	public int getRating4() {
+		return rating4;
+	}
+
+	public int getRating5() {
+		return rating5;
+	}
+
+	public String getBandID() {
+		return bandID;
+	}
+
+	public int getBaseSalaryIncrease() {
+		return baseSalaryIncrease;
+	}
+
+	public int getNewBaseSalary() {
+		return newBaseSalary;
+	}
+
+	public int getNewBandID() {
+		return newBandID;
+	}
+
+	public int getBonusAmount() {
+		return bonusAmount;
+	}
+
 	public void setCustSat(CustomerSatisfaction sat) {
 		this.custSat = sat;
+		this.rating1 = this.custSat.getNum1stars();
+		this.rating2 = this.custSat.getNum2stars();
+		this.rating3 = this.custSat.getNum3stars();
+		this.rating4 = this.custSat.getNum4stars();
+		this.rating5 = this.custSat.getNum5stars();
 	}
 
 	public CustomerSatisfaction getCustSat() {
@@ -67,47 +110,56 @@ public class Employee {
 	}
 
 	public static List<Employee> mergeCustomerSatisfactionRatings(List<Employee> employees, List<CustomerSatisfaction> ratings) {
-
-		int i = 0;
-		while (i < ratings.size()) {
-			int j = 0;
-			while (j < employees.size()) {
-				if (employees.get(j).employeeId == ratings.get(i).getEmployeeId()) {
-					employees.get(j).setCustSat(ratings.get(i));
+		for (CustomerSatisfaction rating : ratings) {
+			for (Employee emp : employees) {
+				if (emp.employeeId == rating.getEmployeeId()) {
+					emp.setCustSat(rating);
 					break;
 				}
-				j++;
 			}
-			i++;
 		}
-
 		return employees;
 	}
 
-	
-	public static List<Employee> mergeManagerList(List<Employee> allEmployees, List<Employee> managers) {
-
-		int i = 0;
-		while (i < managers.size()) {
-			int j = 0;
-			while (j < allEmployees.size()) {
-				if (allEmployees.get(j).employeeId == managers.get(i).getEmployeeId()) {
-					allEmployees.get(j).setIsManager();
+	public static List<Employee> mergeSalaryBands(List<Employee> employees, List<SalaryBand> bands) {
+		for (Employee emp : employees) {
+			for (SalaryBand band : bands) {
+				//Calculate bonus before cust sat ratings
+				if ((emp.getBaseSalary() >= band.getMinimum()) && 
+						(emp.getBaseSalary() <= band.getMaximum())
+						)
+				{
+					//set base bonus on emp object
+					emp.setBonusPct(band.getBonusPercentage());
+					emp.setBandID(band.getBand());
 					break;
 				}
-				j++;
 			}
-			i++;
+		}
+		return employees;
+	}
+
+	public static List<Employee> mergeManagerList(List<Employee> allEmployees, List<Employee> managers) {
+		for (Employee manager : managers) {
+			for (Employee emp : allEmployees) {
+				if (emp.employeeId == manager.getEmployeeId()) {
+					emp.setIsManager();
+					break;
+				}
+			}
 		}
 		
 		return allEmployees;
 	}
 
-	
 	@Override
 	public String toString() {
-		return "Employee [name=" + name + ", employeeId=" + employeeId + ", baseSalary=" + baseSalary + ", dealership="
-				+ dealershipId + ", bonusPct=" + bonusPct + ", bonusPoints=" + bonusPoints + ", bonusPctSatisfaction=" + bonusPctSatisfaction + "]";
+		return "Employee [employeeId=" + employeeId + ", name=" + name + ", baseSalary=" + baseSalary
+				+ ", dealershipId=" + dealershipId + ", rating1=" + rating1 + ", rating2=" + rating2 + ", rating3="
+				+ rating3 + ", rating4=" + rating4 + ", rating5=" + rating5 + ", bandID=" + bandID
+				+ ", baseSalaryIncrease=" + baseSalaryIncrease + ", newBaseSalary=" + newBaseSalary + ", newBandID="
+				+ newBandID + ", bonusPct=" + bonusPct + ", bonusPctSatisfaction=" + bonusPctSatisfaction
+				+ ", bonusPoints=" + bonusPoints + ", bonusAmount=" + bonusAmount + ", isManager=" + isManager + "]";
 	}
 
 	public Boolean getIsManager() {
@@ -120,6 +172,10 @@ public class Employee {
 	
 	public void setBonusPct(float pct){
 		this.bonusPct = pct;
+	}
+	
+	public void setBandID(String band) {
+		this.bandID = band;
 	}
 	
 	public void setBonusPctSatisfaction(float pct){
@@ -142,23 +198,22 @@ public class Employee {
 		return bonusPoints;
 	}
 	
-	public static List<Employee> getAllRaw() {
+	public static List<Employee> getAllBase() {
 
 		// Declare the JDBC objects.
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		String table = "raw_Employees";
 		List<Employee> list = new ArrayList<Employee>();
 
 		try {
 
-			String sql = "select * from %s order by dealershipid, employeeid ASC";
+			String sql = "select name, employeeID, baseSalary, dealershipID from Employees order by dealershipid, employeeid ASC";
 
 			conn = ConnectionFactory.getConnection();  
 			stmt = conn.createStatement();
 
-			rs = stmt.executeQuery(String.format(sql, table));
+			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				Employee item = new Employee(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4));
 				list.add(item);
@@ -186,7 +241,7 @@ public class Employee {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		String table = "raw_Managers"; //this is a db VIEW
+		String table = "Managers"; //this is a db VIEW 
 		List<Employee> list = new ArrayList<Employee>();
 
 		try {

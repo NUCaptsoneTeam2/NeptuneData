@@ -73,7 +73,7 @@ public class ParseSalaryBand {
 				i++;
 			}
 
-			stmt.executeBatch();					
+			stmt.executeBatch();
 			stmt.clearBatch();
 
 		}

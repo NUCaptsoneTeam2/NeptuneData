@@ -1,28 +1,24 @@
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class Vehicle {
 
 	private String model;
-	private Make make;
+	private String make;
 	private String strMake;
 	private int cost;
 	private int tagPrice;
-	
-	public Vehicle(String model, Make make, int cost, int tagPrice)
+
+
+	public Vehicle(String model, String make, int cost, int tagPrice)
 	{
 		this.model = model;
 		this.make = make;
 		this.cost = cost;
 		this.tagPrice = tagPrice;		
 	}
-	
-	public Vehicle(String model, String strMakeList, int cost, int tagPrice)
-	{
-		this.model = model;
-		this.strMake = strMakeList;
-		this.cost = cost;
-		this.tagPrice = tagPrice;		
-	}
-	
+
 	public String getModel() {
 		return model;
 	}
@@ -31,7 +27,7 @@ public class Vehicle {
 		return strMake;
 	}
 
-	public Make getMake() {
+	public String getMake() {
 		return make;
 	}
 
@@ -42,16 +38,48 @@ public class Vehicle {
 	public int getTagPrice() {
 		return tagPrice;
 	}
-	
+
 	public enum Make
 	{
-	  ALL, Coupe, Pickup, Sedan, SUV;
+		ALL, Coupe, Pickup, Sedan, SUV;
 	}
 
 	@Override
 	public String toString() {
-		return "Vehicle [model=" + model + ", make=" + strMake + ", cost=" + cost + ", tagPrice=" + tagPrice + "]";
+		return "Vehicle [model=" + model + ", make=" + make + ", cost=" + cost + ", tagPrice=" + tagPrice + "]";
 	}
-	
+
+
+	public static Vehicle getByModelID(String modelID) {
+		// Declare the JDBC objects.
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Vehicle vehicle = null;
+
+		try {
+
+			conn = ConnectionFactory.getConnection();
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery(String.format("select modelID, vehicleClass, cost, tagPrice from Vehicles WHERE modelID = \'%s\'", modelID));
+			rs.next(); //need to advance the rs
+			vehicle = new Vehicle(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4));
+		}
+
+		// Handle errors.
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			if (null != rs) try { rs.close(); } catch(Exception e) {}
+			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
+			if (null != conn) try { conn.close(); } catch(Exception e) {}
+		}
+
+		return vehicle;
+	}
+
 
 }

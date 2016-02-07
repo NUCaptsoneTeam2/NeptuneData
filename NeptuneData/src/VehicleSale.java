@@ -1,7 +1,9 @@
+import java.util.List;
 
 public class VehicleSale {
 
 	private int employeeId;
+	private int dealershipId;
 	private int monthNum;
 	private int ns100;
 	private int ns200;
@@ -13,7 +15,7 @@ public class VehicleSale {
 	private int np500;
 	private int nu600;
 	private int nu700;
-	
+
 	public VehicleSale(int employeeId, int monthNum, int ns100, int ns200, int ns300, int nc150, int nc250, int nc350,
 			int np400, int np500, int nu600, int nu700) {
 		this.employeeId = employeeId;
@@ -32,6 +34,14 @@ public class VehicleSale {
 
 	public int getEmployeeId() {
 		return employeeId;
+	}
+
+	public int getDealershipId() {
+		return dealershipId;
+	}
+
+	public void setDealershipId(int id) {
+		this.dealershipId = id;
 	}
 
 	public int getMonthNum() {
@@ -85,5 +95,16 @@ public class VehicleSale {
 				+ np400 + ", np500=" + np500 + ", nu600=" + nu600 + ", nu700=" + nu700 + "]";
 	}
 
-	
+	public static List<VehicleSale> mergeDealershipId(List<VehicleSale> sales, List<Employee> employees) {
+		for (VehicleSale sale : sales) {
+			for (Employee emp : employees) {
+				if (emp.getEmployeeId() == sale.getEmployeeId()) {
+					sale.setDealershipId(emp.getDealershipId());
+					break;
+				}
+			}
+		}
+		return sales;
+	}
+
 }

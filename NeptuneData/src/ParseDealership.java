@@ -11,7 +11,7 @@ public class ParseDealership {
 	
 	private static String path = Constants.FILE_DEALERSHIP;
 
-	public static List<Dealership> parse() throws NumberFormatException, IOException
+	private static List<Dealership> parse() throws NumberFormatException, IOException
 	{
 	   List<Dealership> list = new ArrayList<Dealership>();
 	   BufferedReader br = new BufferedReader(new FileReader(path));
@@ -46,25 +46,26 @@ public class ParseDealership {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		String table = "raw_Dealerships";
+		ResultSet rs2 = null;
+		String table = "Dealerships";
+		String table2 = "DealershipPromotions";
 
 		try {
 
-			String sqlTemplate = "insert into %s (DealershipID, City, State, Zip, ManagerID, OperatingCosts, PromotionIDs) "
-					+ "VALUES (%s, \'%s\', \'%s\', %s, %s, %s, \'%s\')";
-
+			String sqlTemplate = "insert into %s (dealershipID, city, state, zipCode, managerID, operatingCosts) "
+					+ "VALUES (%s, \'%s\', \'%s\', %s, %s, %s)";
+			
 			List<Dealership> items = ParseDealership.parse();
-
 			conn = ConnectionFactory.getConnection();  
 			stmt = conn.createStatement();
-			
+
 			//handle case where data exists
 			rs = stmt.executeQuery(String.format("select count(*) from %s", table));
 			rs.next();
 			if (rs.getInt(1) > 0) {
 				stmt.execute(String.format("TRUNCATE table %s", table));
 			}
-
+			
 			int i = 0;
 			while (i < items.size()) {
 				String SQL = String.format(sqlTemplate, table, items.get(i).getDealershipId(), 
@@ -81,8 +82,27 @@ public class ParseDealership {
 
 			stmt.executeBatch();					
 			stmt.clearBatch();
-			//stmt.executeUpdate(SQL);
+			
+			String sqlTemplate2 = "insert into %s (dealershipID, promotionName) "
+					+ "VALUES (%s, \'%s\')";
 
+
+			//handle case where data exists in table2
+			rs2 = stmt.executeQuery(String.format("select count(*) from %s", table2));
+			rs2.next();
+			if (rs2.getInt(1) > 0) {
+				stmt.execute(String.format("TRUNCATE table %s", table2));
+			}
+
+			for (Dealership dealer : items) {
+				for (String dealerName : dealer.getPromotions()) {
+					String SQL2 = String.format(sqlTemplate2, table2, dealer.getDealershipId(), dealerName);
+							stmt.addBatch(SQL2);
+				}
+			}
+
+			stmt.executeBatch();					
+			stmt.clearBatch();
 		}
 
 		// Handle errors.

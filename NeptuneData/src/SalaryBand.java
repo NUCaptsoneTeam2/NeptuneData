@@ -8,14 +8,14 @@ public class SalaryBand {
 
 	private String band;
 	private int minimum;
-	private int maximum;
+	private int maximum = -1;
 	private int paidTimeOffDays;
 	private float bonusPercentage;
 	
-	public SalaryBand(String band, int minimum, int maximum, int paidTimeOffDays, float bonusPercentage) {
+	public SalaryBand(String band, int min, int max, int paidTimeOffDays, float bonusPercentage) {
 		this.band = band;
-		this.minimum = minimum;
-		this.maximum = maximum;
+		this.minimum = min;
+		this.maximum = max;
 		this.paidTimeOffDays = paidTimeOffDays;
 		this.bonusPercentage = bonusPercentage;
 	}
@@ -29,7 +29,10 @@ public class SalaryBand {
 	}
 
 	public int getMaximum() {
-		return maximum;
+		if (maximum == -1)
+			return Integer.MAX_VALUE;
+		else
+			return maximum;
 	}
 
 	public int getPaidTimeOffDays() {
