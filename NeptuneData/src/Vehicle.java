@@ -1,6 +1,8 @@
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Vehicle {
 
@@ -81,5 +83,36 @@ public class Vehicle {
 		return vehicle;
 	}
 
+	public static List<Vehicle> getAll() {
+		// Declare the JDBC objects.
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		List<Vehicle> list =  new ArrayList<Vehicle>();;
 
+		try {
+
+			conn = ConnectionFactory.getConnection();
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery("select * from Vehicles");
+			while (rs.next()) {
+				Vehicle item = new Vehicle(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4));
+				list.add(item);
+			}
+		}
+
+		// Handle errors.
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			if (null != rs) try { rs.close(); } catch(Exception e) {}
+			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
+			if (null != conn) try { conn.close(); } catch(Exception e) {}
+		}
+
+		return list;
+	}
 }

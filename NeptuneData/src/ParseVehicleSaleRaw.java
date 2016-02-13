@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParseVehicleSale {
+public class ParseVehicleSaleRaw {
 
 	private static String path = Constants.FILE_AUTOSALES;
 
-	private static List<VehicleSale> parse() throws NumberFormatException, IOException
+	private static List<VehicleSaleRaw> parse() throws NumberFormatException, IOException
 	{
-		List<VehicleSale> list = new ArrayList<VehicleSale>();
+		List<VehicleSaleRaw> list = new ArrayList<VehicleSaleRaw>();
 		BufferedReader br = new BufferedReader(new FileReader(path));
 		String line = "";
 		while((line = br.readLine()) != null) 
@@ -35,7 +35,7 @@ public class ParseVehicleSale {
 			int nu600 = Integer.parseInt(fields[10]);
 			int nu700 = Integer.parseInt(fields[11]);
 
-			VehicleSale item = new VehicleSale(employeeId, monthNum, ns100, ns200, ns300, 
+			VehicleSaleRaw item = new VehicleSaleRaw(employeeId, monthNum, ns100, ns200, ns300, 
 					nc150, nc250, nc350, np400, np500, nu600, nu700);
 			list.add(item);
 		}
@@ -60,10 +60,10 @@ public class ParseVehicleSale {
 			String sqlTemplate = "insert into %s (employeeID, month, modelID, dealershipID, totalSalesCount, totalCost) " 
 					+ "VALUES (%s, %s, \'%s\', %s, %s, %s)";
 
-			List<VehicleSale> items = ParseVehicleSale.parse();			
+			List<VehicleSaleRaw> items = ParseVehicleSaleRaw.parse();			
 			List<Employee> employees = Employee.getAllBase();
 			
-			items = VehicleSale.mergeDealershipId(items, employees);
+			items = VehicleSaleRaw.mergeDealershipId(items, employees);
 
 			conn = ConnectionFactory.getConnection();  
 			stmt = conn.createStatement();
@@ -88,7 +88,7 @@ public class ParseVehicleSale {
 			Vehicle nu700 = Vehicle.getByModelID("nu700");
 
 			int i=0;
-			for (VehicleSale item : items) {
+			for (VehicleSaleRaw item : items) {
 				String sql1 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), ns100.getModel(), item.getDealershipId(), item.getNs100(), (item.getNs100() * ns100.getCost()));
 				String sql2 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), ns200.getModel(), item.getDealershipId(), item.getNs200(), (item.getNs200() * ns200.getCost()));
 				String sql3 = String.format(sqlTemplate, table, item.getEmployeeId(), item.getMonthNum(), ns300.getModel(), item.getDealershipId(), item.getNs300(), (item.getNs300() * ns300.getCost()));

@@ -36,11 +36,11 @@ public class EmployeeCalc {
 	}
 
 
-	static private void calculateAndStoreCustomerSatisfactionRatings(List<Employee> employees) {
+	private static void calculateAndStoreCustomerSatisfactionRatings(List<Employee> employees) {
 		ParseEmployee.updateRatings(employees);
 	}
 	
-	static private void calculateAndStoreSalaryBands(List<Employee> employees) {
+	private static void calculateAndStoreSalaryBands(List<Employee> employees) {
 		ParseEmployee.updateSalaryBands(employees);
 	}
 	
