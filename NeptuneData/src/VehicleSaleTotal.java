@@ -11,7 +11,7 @@ public class VehicleSaleTotal {
     /**
      * Calculate vehicle sales for a specified employee.
      */
-    public static void calculateTotalCarSalesEmployee(String employeeID) {
+    public static void calculateTotalCarSalesEmployee(int employeeID) {
 
         // Import all records for selected employee.
         // Declare the JDBC objects.
