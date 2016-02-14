@@ -110,7 +110,7 @@ public class VehicleSaleTotal {
                     + "totalCost, "
                     + "totalProfit "
                     + "FROM VehicleSales "
-                    + "WHERE employeeID = %s";
+                    + "WHERE dealershipID = %s";
 
             conn = ConnectionFactory.getConnection();
             stmt = conn.createStatement();
@@ -166,7 +166,7 @@ public class VehicleSaleTotal {
     /**
      * Calculate vehicle sales for a specified state.
      */
-    public static void calculateTotalCarSalesState() {
+    public static void calculateTotalCarSalesState(String state) {
 
 
     }
