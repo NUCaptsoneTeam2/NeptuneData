@@ -168,7 +168,7 @@ public class VehicleSaleTotal {
      */
     public static void calculateTotalCarSalesState(String state) {
 
-        // Validate user has input a valid state abbreviation.
+        //TODO: Validate user has input a valid state abbreviation.
 
 
 
@@ -252,8 +252,40 @@ public class VehicleSaleTotal {
      */
     public static void calculateTotalCarSalesNational() {
 
+        // Import all records for selected employee.
+        // Declare the JDBC objects.
+        Connection conn;
+        Statement stmt;
+        ResultSet rs;
+
+        try {
+
+            // Generate SQL Query
+            String sql = "SELECT SUM(CONVERT(BIGINT,totalSalesAmount)) "
+                    + "FROM VehicleSales;"
+                    ;
+
+            conn = ConnectionFactory.getConnection();
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery(String.format(sql));
+
+            // Query will only ever return one row, so this should be OK without a loop.
+            rs.next();
+
+            long totalSales = rs.getLong(1);
+
+            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
+
+            System.out.println(String.format("Total sales nationwide: %s", currencyFormat.format(totalSales)));
+
+        }
+
+        // Handle errors.
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
-
 
 }
