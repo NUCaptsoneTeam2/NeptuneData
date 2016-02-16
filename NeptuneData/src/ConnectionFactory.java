@@ -25,18 +25,14 @@ public class ConnectionFactory {
 		}
 	}
 
-	private Connection createConnection() {
+	private Connection createConnection() throws SQLException, Exception {
 		Connection connection = null;
-		try {
 			connection = DriverManager.getConnection(connectionUrl, username, password);
 			connection.setCatalog(catalog);
-		} catch (SQLException e) {
-			System.out.println("ERROR: Unable to Connect to Database.");
-		}
 		return connection;
 	}   
 
-	public static Connection getConnection() {
+	public static Connection getConnection() throws SQLException, Exception {
 		return instance.createConnection();
 	}
 }

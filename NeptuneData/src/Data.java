@@ -44,14 +44,13 @@ public class Data {
 
 		
 		//WARNING: Commented for now because it takes 20-25 minutes to complete. 
-/*
+
  		// Load raw VehicleSales data
 		try {
-			ParseVehicleSale.loadRaw();
+			ParseVehicleSaleRaw.loadRaw();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
-*/
 		
 	}
 }

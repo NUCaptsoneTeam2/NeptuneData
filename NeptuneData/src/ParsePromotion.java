@@ -63,7 +63,7 @@ public class ParsePromotion {
 
 			int i = 0;
 			while (i < items.size()) {
-				String SQL = String.format(sqlTemplate, table, items.get(i).getPromotionId(), items.get(i).getMonth(),
+				String SQL = String.format(sqlTemplate, table, items.get(i).getPromotionName(), items.get(i).getMonth(),
 						items.get(i).getCashbackBonus(), items.get(i).getVehicleClass());
 
 				stmt.addBatch(SQL);

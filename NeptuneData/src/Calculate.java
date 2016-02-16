@@ -8,8 +8,8 @@ public class Calculate {
 			EmployeeCalc.run();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	
-*/
+		}*/	
+
 		// Promotion-related calculations
 		try {
 			PromotionCalc.run();

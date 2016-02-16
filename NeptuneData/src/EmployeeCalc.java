@@ -88,7 +88,6 @@ public class EmployeeCalc {
 
 		// Assign employees/managers to dealerships
 		for (Dealership dealer : dealerships) {
-
 			for (Employee emp : employees) {
 				if (emp.getIsManager() && (dealer.getDealershipId() == emp.getDealershipId())) {
 					dealer.setManager(emp);

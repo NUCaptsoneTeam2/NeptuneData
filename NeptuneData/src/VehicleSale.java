@@ -100,7 +100,40 @@ public class VehicleSale {
 			conn = ConnectionFactory.getConnection();
 			stmt = conn.createStatement();
 
-			rs = stmt.executeQuery(String.format("SELECT * FROM VehicleSales WHERE dealershipID = %s AND totalSalesCount > 0", dealershipId));
+			rs = stmt.executeQuery(String.format("SELECT * FROM VehicleSales WHERE dealershipID = %s AND totalSalesCount > 0 AND IsCalculated = 0", dealershipId));
+			while (rs.next()) {
+				VehicleSale item = new VehicleSale(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9));
+				list.add(item);
+			}
+		}
+
+		// Handle errors.
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			if (null != rs) try { rs.close(); } catch(Exception e) {}
+			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
+			if (null != conn) try { conn.close(); } catch(Exception e) {}
+		}
+
+		return list;
+	}
+	
+	public static List<VehicleSale> getAllSalesWithPromotions() {
+		// Declare the JDBC objects.
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		List<VehicleSale> list =  new ArrayList<VehicleSale>();
+
+		try {
+
+			conn = ConnectionFactory.getConnection();
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery("SELECT * FROM VehicleSales WHERE ISNULL(promotionId, 0) > 0 AND IsCalculated = 0");
 			while (rs.next()) {
 				VehicleSale item = new VehicleSale(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9));
 				list.add(item);
@@ -154,6 +187,39 @@ public class VehicleSale {
 		return list;
 	}
 
+	public static List<VehicleSale> getAllSalesWithoutPromotions() {
+		// Declare the JDBC objects.
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		List<VehicleSale> list =  new ArrayList<VehicleSale>();;
+
+		try {
+
+			conn = ConnectionFactory.getConnection();
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery("SELECT * FROM VehicleSales WHERE ISNULL(promotionID, 0) = 0 AND IsCalculated = 0  AND totalSalesCount > 0");
+			while (rs.next()) {
+				VehicleSale item = new VehicleSale(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9));
+				list.add(item);
+			}
+		}
+
+		// Handle errors.
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			if (null != rs) try { rs.close(); } catch(Exception e) {}
+			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
+			if (null != conn) try { conn.close(); } catch(Exception e) {}
+		}
+
+		return list;
+	}
+
 	public static void updateVehicleSalesCalculations(List<VehicleSale> sales)
 	{
 		// Declare the JDBC objects.
@@ -167,12 +233,13 @@ public class VehicleSale {
 			String sqlTemplate = "update %s set "
 					+ "promotionId = %s, "
 					+ "totalSalesAmount = %s, "
-					+ "totalProfit = %s "
+					+ "totalProfit = %s, "
+					+ "IsCalculated = 1 "
 					+ "WHERE employeeID = %s AND month = %s AND modelId = \'%s\' AND dealershipId = %s";
 
 			conn = ConnectionFactory.getConnection();  
 			stmt = conn.createStatement();
-
+			
 			int i=0; // used for batching
 			for (VehicleSale sale : sales) {
 				String SQL = String.format(sqlTemplate, table, 
@@ -185,7 +252,7 @@ public class VehicleSale {
 						sale.getDealershipId());
 				stmt.addBatch(SQL);
 
-				//process in batches of 2000 records; this volume seemed about right after a few different tests
+				//process in batches of 500 records; this volume seemed about right after a few different tests
 				if (i % 2000 == 0 && i != 0){
 					System.out.println("Beginning commit " + i + " @ " + LocalDateTime.now().toString());
 					stmt.executeBatch();					
@@ -212,6 +279,32 @@ public class VehicleSale {
 			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
 			if (null != conn) try { conn.close(); } catch(Exception e) {}
 		}
-
 	}
+
+	public static void updateVehicleSalesWithoutSales()
+	{
+		// Declare the JDBC objects.
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			conn = ConnectionFactory.getConnection();  
+			stmt = conn.createStatement();
+			stmt.executeUpdate("exec UPDATE_VehicleSalesWithoutSales");
+		}
+
+		// Handle errors.
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			if (null != rs) try { rs.close(); } catch(Exception e) {}
+			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
+			if (null != conn) try { conn.close(); } catch(Exception e) {}
+		}
+	}
+
 }
