@@ -63,7 +63,7 @@ public class VehicleSaleTotal {
 
                 for(VehicleSale sale : salesList){
 
-                    totalSales =+ sale.getTotalSalesAmount();
+                    totalSales += sale.getTotalSalesAmount();
 
                 }
 
@@ -141,7 +141,7 @@ public class VehicleSaleTotal {
 
                 for(VehicleSale sale : salesList){
 
-                    totalSales =+ sale.getTotalSalesAmount();
+                    totalSales += sale.getTotalSalesAmount();
 
                 }
 
@@ -223,7 +223,7 @@ public class VehicleSaleTotal {
 
                 for(VehicleSale sale : salesList){
 
-                    totalSales =+ sale.getTotalSalesAmount();
+                    totalSales += sale.getTotalSalesAmount();
 
                 }
 
