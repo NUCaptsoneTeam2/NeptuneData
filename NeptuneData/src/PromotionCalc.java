@@ -11,8 +11,8 @@ public class PromotionCalc {
 		List<Vehicle> vehicles = Vehicle.getAll();
 		List<Dealership> dealers = Dealership.getAllBase();
 
-		//VehicleSale.updateVehicleSalesWithoutSales();
-		//PromotionCalc.calculateSalesProfitsWithPromotions(dealers, vehicles);
+		VehicleSale.updateVehicleSalesWithoutSales();
+		PromotionCalc.calculateSalesProfitsWithPromotions(dealers, vehicles);
 		PromotionCalc.calculateSalesProfitsWithoutPromotions(vehicles);
 
 	}

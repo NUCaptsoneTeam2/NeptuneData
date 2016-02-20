@@ -32,9 +32,9 @@ public class ParseEmployee {
 		}
 		br.close();
 
-        //Write to console
-        list.forEach(System.out::println);
-        
+		//Write to console
+		list.forEach(System.out::println);
+
 		return list;
 	}
 
@@ -164,7 +164,7 @@ public class ParseEmployee {
 		}
 
 	}
-	
+
 	public static void updateSalaryBands(List<Employee> employees)
 	{
 		// Declare the JDBC objects.
@@ -177,8 +177,7 @@ public class ParseEmployee {
 
 			String sqlTemplate = "update %s set "
 					+ "bandID = \'%s\', "
-					+ "bonusPct = %s, "
-					+ "bonusAmount = %s "
+					+ "bonusPct = %s "
 					+ "WHERE employeeID = %s";
 
 			conn = ConnectionFactory.getConnection();  
@@ -189,7 +188,6 @@ public class ParseEmployee {
 				String SQL = String.format(sqlTemplate, table, 
 						emp.getBandID(),
 						emp.getBonusPct(),
-						emp.getBonusAmount(),
 						emp.getEmployeeId());
 
 				stmt.addBatch(SQL);
@@ -197,7 +195,7 @@ public class ParseEmployee {
 				//process in batches of 2000 records; this volume seemed about right after a few different tests
 				if (i % 2000 == 0 && i != 0){
 					System.out.println("Beginning commit " + i + " @ " + LocalDateTime.now().toString());
-					stmt.executeBatch();					
+					stmt.executeBatch();
 					stmt.clearBatch();
 					System.out.println("Completed @ " + LocalDateTime.now().toString());
 				}

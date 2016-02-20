@@ -18,11 +18,11 @@ public class Employee {
 	private String bandID;
 	private int baseSalaryIncrease;
 	private int newBaseSalary;
-	private int newBandID;
+	private String newBandID;
 	private float bonusPct = 0;
 	private float bonusPctSatisfaction = 0;
 	private int bonusPoints = 0;
-	private int bonusAmount = 0;
+	//private int bonusAmount = 0;
 	private CustomerSatisfaction custSat;
 	private Boolean isManager = false;
 
@@ -81,12 +81,8 @@ public class Employee {
 		return newBaseSalary;
 	}
 
-	public int getNewBandID() {
+	public String getNewBandID() {
 		return newBandID;
-	}
-
-	public int getBonusAmount() {
-		return bonusAmount;
 	}
 
 	public void setCustSat(CustomerSatisfaction sat) {
@@ -123,22 +119,12 @@ public class Employee {
 
 	public static List<Employee> mergeSalaryBands(List<Employee> employees, List<SalaryBand> bands) {
 		for (Employee emp : employees) {
-			for (SalaryBand band : bands) {
-				//Calculate bonus before cust sat ratings
-				if ((emp.getBaseSalary() >= band.getMinimum()) && 
-						(emp.getBaseSalary() <= band.getMaximum())
-						)
-				{
-					//set base bonus on emp object
-					emp.setBonusPct(band.getBonusPercentage());
-					emp.setBandID(band.getBand());
-					break;
-				}
-			}
+			emp.setBandID(bands);
+			emp.setBonusPct(bands);
 		}
 		return employees;
 	}
-
+	
 	public static List<Employee> mergeManagerList(List<Employee> allEmployees, List<Employee> managers) {
 		for (Employee manager : managers) {
 			for (Employee emp : allEmployees) {
@@ -148,7 +134,7 @@ public class Employee {
 				}
 			}
 		}
-		
+
 		return allEmployees;
 	}
 
@@ -159,27 +145,56 @@ public class Employee {
 				+ rating3 + ", rating4=" + rating4 + ", rating5=" + rating5 + ", bandID=" + bandID
 				+ ", baseSalaryIncrease=" + baseSalaryIncrease + ", newBaseSalary=" + newBaseSalary + ", newBandID="
 				+ newBandID + ", bonusPct=" + bonusPct + ", bonusPctSatisfaction=" + bonusPctSatisfaction
-				+ ", bonusPoints=" + bonusPoints + ", bonusAmount=" + bonusAmount + ", isManager=" + isManager + "]";
+				+ ", bonusPoints=" + bonusPoints + ", isManager=" + isManager + "]";
 	}
 
 	public Boolean getIsManager() {
 		return isManager;
 	}
-	
+
 	private void setIsManager(){
 		this.isManager = true;
 	}
-	
-	public void setBonusPct(float pct){
-		this.bonusPct = pct;
+
+	public void setBonusPct(List<SalaryBand> bands){
+		for (SalaryBand band : bands) {
+			if ((this.getBaseSalary() >= band.getMinimum()) && (this.getBaseSalary() <= band.getMaximum())) {
+				this.bonusPct = band.getBonusPercentage();
+				break;
+			}
+		}
 	}
-	
-	public void setBandID(String band) {
-		this.bandID = band;
+
+	public void setBandID(List<SalaryBand> bands) {
+		for (SalaryBand band : bands) {
+			if ((this.getBaseSalary() >= band.getMinimum()) && (this.getBaseSalary() <= band.getMaximum())) {
+				this.bandID = band.getBand();
+				break;
+			}
+		}
 	}
-	
+
+	public void setNewBandID(List<SalaryBand> bands) {
+		for (SalaryBand band : bands) {
+			if ((this.getNewBaseSalary() >= band.getMinimum()) && 
+					(this.getNewBaseSalary() <= band.getMaximum())
+					)
+			{
+				this.newBandID = band.getBand();
+				break;
+			}
+		}
+	}
+
 	public void setBonusPctSatisfaction(float pct){
 		this.bonusPctSatisfaction = pct;
+	}
+
+	public void calculateAndSaveSalaryValues(List<SalaryBand> bands){
+		this.baseSalaryIncrease = (int) (this.baseSalary * (.05 + this.bonusPct));
+		this.newBaseSalary = this.baseSalary + this.baseSalaryIncrease;
+		this.setNewBandID(bands);
+		this.saveCalculatedSalaryInfo();
 	}
 
 	public void setBonusPoints(int points){
@@ -197,6 +212,7 @@ public class Employee {
 	public int getBonusPoints() {
 		return bonusPoints;
 	}
+
 	
 	public static List<Employee> getAllBase() {
 
@@ -234,7 +250,45 @@ public class Employee {
 
 		return list;
 	}
-	
+
+	public static List<Employee> getAll() {
+
+		// Declare the JDBC objects.
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		List<Employee> list = new ArrayList<Employee>();
+
+		try {
+
+			String sql = "select name, employeeID, baseSalary, dealershipID from Employees order by dealershipid, employeeid ASC";
+
+			conn = ConnectionFactory.getConnection();  
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				Employee item = new Employee(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4));
+				list.add(item);
+			}
+
+		}
+
+		// Handle errors.
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			if (null != rs) try { rs.close(); } catch(Exception e) {}
+			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
+			if (null != conn) try { conn.close(); } catch(Exception e) {}
+		}
+
+		return list;
+	}
+
+
 	public static List<Employee> getAllManagers() {
 
 		// Declare the JDBC objects.
@@ -272,6 +326,50 @@ public class Employee {
 
 		return list;
 	}
+
+	private void saveCalculatedSalaryInfo()
+	{
+		// Declare the JDBC objects.
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		String table = "Employees";
+
+		try {
+
+			String sqlTemplate = "update %s set "
+					+ "baseSalaryIncrease = %s, "
+					+ "newBaseSalary = %s, "
+					+ "bonusPctCustSat = %s, "
+					+ "newBandID = \'%s\' "
+					+ "WHERE employeeID = %s";
+
+			conn = ConnectionFactory.getConnection();  
+			stmt = conn.createStatement();
+
+			String SQL = String.format(sqlTemplate, table, 
+					this.getBaseSalaryIncrease(),
+					this.newBaseSalary,
+					this.getBonusPctSatisfaction(),
+					this.getNewBandID(),
+					this.getEmployeeId());
+			stmt.execute(SQL);
+
+		}
+
+		// Handle errors.
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			if (null != rs) try { rs.close(); } catch(Exception e) {}
+			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
+			if (null != conn) try { conn.close(); } catch(Exception e) {}
+		}
+
+	}
+
 }
 
 

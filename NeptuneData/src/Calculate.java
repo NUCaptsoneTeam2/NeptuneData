@@ -15,7 +15,14 @@ public class Calculate {
 			PromotionCalc.run();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	*/
+		}*/
+
+		// Dealership-related calculations
+		try {
+			DealershipCalc.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
 
 	}
 	

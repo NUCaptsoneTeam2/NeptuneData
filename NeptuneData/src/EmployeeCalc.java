@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-//import java.util.HashMap;
 import java.util.List;
 
 public class EmployeeCalc {
@@ -22,16 +21,15 @@ public class EmployeeCalc {
 			return;
 		}
 
-		//More prep of ratigs and salary band data on the employees list
+		//Prep ratings and salary band data on the employees list
 		employees = Employee.mergeCustomerSatisfactionRatings(employees, ratings);
 		employees = Employee.mergeSalaryBands(employees, bands);
 
 		//Save/update DB with calculations
-		//		calculateAndStoreCustomerSatisfactionRatings(employees);
-		//		calculateAndStoreSalaryBands(employees);
+		calculateAndStoreCustomerSatisfactionRatings(employees);
+		calculateAndStoreCurrentSalaryBands(employees);
 
-		//this how far we've gotten with programming calculations; method works but is not yet complete
-		calculateBonusWithCustomerRatings(employees, dealerships);
+		calculateBonusWithCustomerRatings(employees, dealerships, bands);
 
 	}
 
@@ -40,11 +38,11 @@ public class EmployeeCalc {
 		ParseEmployee.updateRatings(employees);
 	}
 
-	private static void calculateAndStoreSalaryBands(List<Employee> employees) {
+	private static void calculateAndStoreCurrentSalaryBands(List<Employee> employees) {
 		ParseEmployee.updateSalaryBands(employees);
 	}
 
-	static private void calculateBonusWithCustomerRatings(List<Employee> employees, List<Dealership> dealerships) {
+	static private void calculateBonusWithCustomerRatings(List<Employee> employees, List<Dealership> dealerships, List<SalaryBand> bands) {
 
 		// Assign employees/managers to dealerships
 		for (Dealership dealer : dealerships) {
@@ -78,25 +76,10 @@ public class EmployeeCalc {
 				//skip 3 stars as multiplier is always 0
 				int pts2stars = sat.getNum2stars() * -1;
 				int pts1stars = sat.getNum1stars() * -2;
-
 				int totalPoints = pts5stars + pts4stars + pts2stars + pts1stars;
 
-				/*				float bonusPct = 0;
-				if (pts5stars != 0)
-					bonusPct += 0.02;
-				if (pts4stars != 0)
-					bonusPct += 0.01;
-				if (pts2stars != 0)
-					bonusPct += -0.01;
-				if (pts1stars != 0)
-					bonusPct += -0.02;
-
-				if (bonusPct < 0) //did we go negative? No can do! 
-					bonusPct = 0;*/
-
-				//set base bonus points/percentage
+				//set base bonus points
 				emp.setBonusPoints(totalPoints);
-				//emp.setBonusPctSatisfaction(bonusPct);
 
 				System.out.println(String.format("Employee %s (%s) earned %s points (%s + %s + 0 + %s + %s = %s)", 
 						emp.getEmployeeId(), 
@@ -107,17 +90,21 @@ public class EmployeeCalc {
 		}
 
 
-		float pct3 = (float)0.03;
-		float pct2 = (float)0.02;
-		float pct1 = (float)0.01;
+		/*
+		 * MASSIVE CUSTOMER SATISFACTION ROUTINE
+		 */
+		final float pct3 = (float)0.03;
+		final float pct2 = (float)0.02;
+		final float pct1 = (float)0.01;
 
 		for (Dealership dealer : dealerships) {
 			List<Employee> empsNoManagers = new ArrayList<>();
 			for (Employee emp : dealer.getEmployees()) {
 				if (!emp.getIsManager().booleanValue()) 
 					empsNoManagers.add(emp);
+				else
+					emp.calculateAndSaveSalaryValues(bands); //save manager calculated values
 			}
-
 
 			System.out.println();
 			System.out.println();
@@ -127,11 +114,12 @@ public class EmployeeCalc {
 			empsNoManagers.sort(Comparator.comparing(Employee::getBonusPoints).reversed());
 
 			for (Employee emp : empsNoManagers) {
-				System.out.println(String.format("Employee %s (%s) has %s bonus points and a possible %s pct bonus.", 
+				System.out.println(String.format("Employee %s (%s) has %s bonus points (base bonus: %s; cust sat bonus: %s)", 
 						emp.getEmployeeId(), 
 						emp.getName(), 
 						emp.getBonusPoints(),
-						emp.getBonusPct()));
+						emp.getBonusPct(),
+						emp.getBonusPctSatisfaction()));
 			}			
 
 			System.out.println();
@@ -141,24 +129,29 @@ public class EmployeeCalc {
 			int prev = empsNoManagers.get(0).getBonusPoints(); //get first emp bonus point
 			int i = 1;
 			for (Employee emp : empsNoManagers) {
-
+				
 				// top 3 processing
-				if (i < 4) {
+				if (i <= 3) {
 					if (i == 1)
 						emp.setBonusPctSatisfaction(pct3);
-					else if (i == 2 && emp.getBonusPoints() < prev)
-						emp.setBonusPctSatisfaction(pct2);
-					else if (i == 2 && emp.getBonusPoints() == prev)
-						emp.setBonusPctSatisfaction(pct3);
-					else if (i == 3 && emp.getBonusPoints() < prev)
-						emp.setBonusPctSatisfaction(pct2);
-					else if (i == 3 && emp.getBonusPoints() == prev)
-						emp.setBonusPctSatisfaction(empsNoManagers.get(i-2).getBonusPctSatisfaction());
-					else
-						;
-					//do nothing?    emp.setBonusPctSatisfaction(pct1);
+					if (i == 2) {
+						if (emp.getBonusPoints() == prev)
+							emp.setBonusPctSatisfaction(pct3);
+						if (emp.getBonusPoints() < prev)
+							emp.setBonusPctSatisfaction(pct2);
+					}
+					if (i == 3) {
+						if (emp.getBonusPoints() < prev) { 
+							if (empsNoManagers.get(0).getBonusPoints() == empsNoManagers.get(1).getBonusPoints()) //Are the 1st and 2nd employees equal? ==> Assign .02
+								emp.setBonusPctSatisfaction(pct2);
+							else
+								emp.setBonusPctSatisfaction(pct1); //otherwise, just process as the 3rd employee less than the 2nd ==> Assign .01
+						}
+						if (emp.getBonusPoints() == prev)
+							emp.setBonusPctSatisfaction(empsNoManagers.get(i-2).getBonusPctSatisfaction());
+					}
 
-					System.out.println(String.format("Employee %s (%s) has %s bonus points and is in the top 3 empoyees. They will earn a %s pct bonus.", 
+					System.out.println(String.format("Employee %s (%s) has %s bonus points and is in the top 3 empoyees. They will earn a %s pct cust sat bonus.", 
 							emp.getEmployeeId(), 
 							emp.getName(), 
 							emp.getBonusPoints(),
@@ -168,40 +161,60 @@ public class EmployeeCalc {
 				//greater than top 3
 				if (i > 3) {
 					if (emp.getBonusPoints() < prev) {
-						System.out.println(String.format("Employee %s (%s) has %s bonus points, which is less than Employee %s who has %s points. We've reached our top candidates.", 
+						System.out.println(String.format("Employee %s (%s) has %s bonus points, which is less than Employee %s who has %s points. Do not include. We've reached our top candidates.", 
 								emp.getEmployeeId(), 
 								emp.getName(), 
 								emp.getBonusPoints(),
 								empsNoManagers.get(i-2).getEmployeeId(),
 								empsNoManagers.get(i-2).getBonusPoints()));
+						saveSalaryValues(empsNoManagers, bands);
 						break; //we are done
 					}
 					if (emp.getBonusPoints() == prev) {
 						//set to same as previous employee
 						emp.setBonusPctSatisfaction(empsNoManagers.get(i-2).getBonusPctSatisfaction());						
-						System.out.println(String.format("Employee %s (%s) has %s bonus points, which is equal to Employee %s who also has %s points. They will earn a %s pct bonus. Include this Employee for bonus.", 
+						System.out.println(String.format("Employee %s (%s) has %s bonus points, which is equal to Employee %s who also has %s points. They will earn a %s pct cust sat bonus. Include this Employee for bonus.", 
 								emp.getEmployeeId(), 
 								emp.getName(), 
 								emp.getBonusPoints(),
 								empsNoManagers.get(i-2).getEmployeeId(),
-								emp.getBonusPctSatisfaction(),
-								empsNoManagers.get(i-2).getBonusPoints()));
+								empsNoManagers.get(i-2).getBonusPoints(),
+								emp.getBonusPctSatisfaction()));
 
-						//Look ahead to see if we are finished with this dealership
-						if (emp.getDealershipId() != empsNoManagers.get(i).getDealershipId())
-							break;
-						else if (emp.getDealershipId() == empsNoManagers.get(i).getDealershipId() && emp.getBonusPoints() > empsNoManagers.get(i).getBonusPoints()) {
-							break;
+						try {
+							//Look ahead to see if we are finished with this dealership
+							if (emp.getDealershipId() != empsNoManagers.get(i).getDealershipId()) {
+								saveSalaryValues(empsNoManagers, bands);
+								break; //we are done
+							}
+							//emp.getDealershipId() == empsNoManagers.get(i).getDealershipId() && 
+							else if (emp.getBonusPoints() > empsNoManagers.get(i).getBonusPoints()) {
+								saveSalaryValues(empsNoManagers, bands);
+								break; //we are done
+							}
+							else
+								; //do nothing
+
 						}
-						else
-							; //do nothing
+						catch (java.lang.IndexOutOfBoundsException e) { 
+							System.out.println("No additional employees in this dealership.");
+							saveSalaryValues(empsNoManagers, bands);
+							break; //we are done
+						}
 					}
 				}
 
 				prev = emp.getBonusPoints();
+				//emp.calculateAndSaveSalaryValues(bands);
 				i++;
+
 			}
-		}
+		}		
+	}
+	
+	private static void saveSalaryValues(List<Employee> employees, List<SalaryBand> bands) {
+		for (Employee emp : employees)
+			emp.calculateAndSaveSalaryValues(bands);
 	}
 
 	private static List<Employee> filterEmployeesByDealershipId(List<Employee> employees, int dealershipId) {
