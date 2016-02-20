@@ -22,7 +22,7 @@ public class PromotionCalc {
 		//Big, ugly, nested loop. This is better-suited for a TSQL join
 		for (Dealership dealer : dealers) {
 			System.out.println(String.format("Processing dealership %s @ %s", dealer.getDealershipId(), LocalDateTime.now()));
-			List<VehicleSale> sales = VehicleSale.getAllSalesByDealershipID(dealer.getDealershipId());
+			List<VehicleSale> sales = VehicleSale.getAllSalesByDealershipID(dealer.getDealershipId(), false);
 			if (sales.size() > 0) {
 				masterSales.add(sales);
 				List<Promotion> promotions = Promotion.getAllPromotionsByDealershipID(dealer.getDealershipId());

@@ -45,6 +45,10 @@ public class Employee {
 		return baseSalary;
 	}
 
+	public void setBaseSalary(int baseSalary) {
+		this.baseSalary = baseSalary;
+	}
+
 	public int getDealershipId() {
 		return dealershipId;
 	}
@@ -79,6 +83,10 @@ public class Employee {
 
 	public int getNewBaseSalary() {
 		return newBaseSalary;
+	}
+	
+	private void setNewBaseSalary(int newBaseSalary) {
+		this.newBaseSalary = newBaseSalary;
 	}
 
 	public String getNewBandID() {
@@ -168,10 +176,14 @@ public class Employee {
 	public void setBandID(List<SalaryBand> bands) {
 		for (SalaryBand band : bands) {
 			if ((this.getBaseSalary() >= band.getMinimum()) && (this.getBaseSalary() <= band.getMaximum())) {
-				this.bandID = band.getBand();
+				this.setBandID(band.getBand());
 				break;
 			}
 		}
+	}
+
+	private void setBandID(String bandId) {
+		this.bandID = bandId;
 	}
 
 	public void setNewBandID(List<SalaryBand> bands) {
@@ -180,10 +192,14 @@ public class Employee {
 					(this.getNewBaseSalary() <= band.getMaximum())
 					)
 			{
-				this.newBandID = band.getBand();
+				this.setNewBandID(band.getBand());
 				break;
 			}
 		}
+	}
+
+	private void setNewBandID(String bandId) {
+		this.newBandID = bandId;
 	}
 
 	public void setBonusPctSatisfaction(float pct){
@@ -205,6 +221,10 @@ public class Employee {
 		return bonusPct;
 	}
 
+	public void setBonusPct(float bonusPct) {
+		this.bonusPct = bonusPct;
+	}
+	
 	public float getBonusPctSatisfaction() {
 		return bonusPctSatisfaction;
 	}
@@ -251,7 +271,7 @@ public class Employee {
 		return list;
 	}
 
-	public static List<Employee> getAll() {
+	public static List<Employee> getAllBaseInfoByDealership(int dealershipId) {
 
 		// Declare the JDBC objects.
 		Connection conn = null;
@@ -261,7 +281,7 @@ public class Employee {
 
 		try {
 
-			String sql = "select name, employeeID, baseSalary, dealershipID from Employees order by dealershipid, employeeid ASC";
+			String sql = String.format("select name, employeeID, baseSalary, dealershipID, bandID, baseSalaryIncrease, newBaseSalary, newBandID, bonusPct from Employees where dealershipID = %s order by dealershipid, employeeid ASC", dealershipId);
 
 			conn = ConnectionFactory.getConnection();  
 			stmt = conn.createStatement();
@@ -269,6 +289,12 @@ public class Employee {
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				Employee item = new Employee(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4));
+				item.setBandID(rs.getString(5));
+				item.setNewBaseSalary(rs.getInt(6));
+				item.setNewBaseSalary(rs.getInt(7));
+				item.setNewBandID(rs.getString(8));
+				item.setBonusPct(rs.getFloat(9));
+				
 				list.add(item);
 			}
 
@@ -349,7 +375,7 @@ public class Employee {
 
 			String SQL = String.format(sqlTemplate, table, 
 					this.getBaseSalaryIncrease(),
-					this.newBaseSalary,
+					this.getNewBaseSalary(),
 					this.getBonusPctSatisfaction(),
 					this.getNewBandID(),
 					this.getEmployeeId());

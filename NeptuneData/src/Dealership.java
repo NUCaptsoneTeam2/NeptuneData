@@ -16,6 +16,7 @@ public class Dealership {
 	private List<String> promotionNames = new ArrayList<String>();
 	private String promoIds; 
 	private List<Employee> employees = new ArrayList<Employee>(); 
+	private long netProfits = 0;
 
 	public Dealership(int dealershipId, String city, String state, int zip, int managerId, int operatingCosts,
 			String promotionList) {
@@ -83,6 +84,14 @@ public class Dealership {
 	public List<Employee> getEmployees(){
 		return employees;
 	}
+	
+	public long getNetProfits(){
+		return this.netProfits;
+	}
+	
+	public void setNetProfits(long netProfits){
+		this.netProfits = netProfits;
+	}
 
 	@Override
 	public String toString() {
@@ -128,4 +137,40 @@ public class Dealership {
 		return list;
 	}
 
+	public void saveNetProfit()
+	{
+		// Declare the JDBC objects.
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		String table = "Dealerships";
+
+		try {
+
+			String sqlTemplate = "update %s set "
+					+ "netProfits = %s "
+					+ "WHERE dealershipID = %s";
+
+			conn = ConnectionFactory.getConnection();  
+			stmt = conn.createStatement();
+
+			String SQL = String.format(sqlTemplate, table, 
+					this.getNetProfits(),
+					this.getDealershipId());
+			stmt.execute(SQL);
+
+		}
+
+		// Handle errors.
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		finally {
+			if (null != rs) try { rs.close(); } catch(Exception e) {}
+			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
+			if (null != conn) try { conn.close(); } catch(Exception e) {}
+		}
+
+	}
 }

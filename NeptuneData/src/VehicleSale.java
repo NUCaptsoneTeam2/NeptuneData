@@ -88,7 +88,7 @@ public class VehicleSale {
 				+ "]";
 	}
 
-	public static List<VehicleSale> getAllSalesByDealershipID(int dealershipId) {
+	public static List<VehicleSale> getAllSalesByDealershipID(int dealershipId, boolean isCalculated) {
 		// Declare the JDBC objects.
 		Connection conn = null;
 		Statement stmt = null;
@@ -100,7 +100,7 @@ public class VehicleSale {
 			conn = ConnectionFactory.getConnection();
 			stmt = conn.createStatement();
 
-			rs = stmt.executeQuery(String.format("SELECT * FROM VehicleSales WHERE dealershipID = %s AND totalSalesCount > 0 AND IsCalculated = 0", dealershipId));
+			rs = stmt.executeQuery(String.format("SELECT * FROM VehicleSales WHERE dealershipID = %s AND totalSalesCount > 0 AND IsCalculated = %s", dealershipId, isCalculated ? 1:0));
 			while (rs.next()) {
 				VehicleSale item = new VehicleSale(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9));
 				list.add(item);
