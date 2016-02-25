@@ -1,10 +1,10 @@
-import java.text.NumberFormat;
-import java.util.Locale;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.List;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class VehicleSaleTotal {
 
@@ -62,18 +62,14 @@ public class VehicleSaleTotal {
                 long totalSales = 0;
 
                 for(VehicleSale sale : salesList){
-
                     totalSales += sale.getTotalSalesAmount();
-
                 }
 
                 NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
 
-
                 System.out.println(String.format("Total sales for employee %s: %s", employeeID, currencyFormat.format(totalSales)));
 
             } else {
-
                 System.out.println("No sales data exists for the specified employeeID: " + employeeID);
 
             }
@@ -83,7 +79,6 @@ public class VehicleSaleTotal {
         catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -140,20 +135,15 @@ public class VehicleSaleTotal {
                 long totalSales = 0;
 
                 for(VehicleSale sale : salesList){
-
                     totalSales += sale.getTotalSalesAmount();
-
                 }
 
                 NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
 
-
                 System.out.println(String.format("Total sales for dealership %s: %s", dealershipID, currencyFormat.format(totalSales)));
 
             } else {
-
                 System.out.println("No sales data exists for the specified dealershipID: " + dealershipID);
-
             }
         }
 
@@ -169,8 +159,6 @@ public class VehicleSaleTotal {
     public static void calculateTotalCarSalesState(String state) {
 
         //TODO: Validate user has input a valid state abbreviation.
-
-
 
         // Import all records for selected employee.
         // Declare the JDBC objects.
@@ -222,18 +210,14 @@ public class VehicleSaleTotal {
                 long totalSales = 0;
 
                 for(VehicleSale sale : salesList){
-
                     totalSales += sale.getTotalSalesAmount();
-
                 }
 
                 NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
 
-
                 System.out.println(String.format("Total sales for State %s: %s", state, currencyFormat.format(totalSales)));
 
             } else {
-
                 System.out.println("No sales data exists for the specified State: " + state);
 
             }
@@ -243,8 +227,6 @@ public class VehicleSaleTotal {
         catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     /**
@@ -278,14 +260,11 @@ public class VehicleSaleTotal {
             NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
 
             System.out.println(String.format("Total sales nationwide: %s", currencyFormat.format(totalSales)));
-
         }
 
         // Handle errors.
         catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 }
