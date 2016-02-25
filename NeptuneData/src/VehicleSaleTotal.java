@@ -59,7 +59,7 @@ public class VehicleSaleTotal {
             // no sales data exists for the specified employeeID.
             if(salesList.size() > 0){
 
-                int totalSales = 0;
+                long totalSales = 0;
 
                 for(VehicleSale sale : salesList){
 
@@ -137,7 +137,7 @@ public class VehicleSaleTotal {
             // no sales data exists for the specified employeeID.
             if(salesList.size() > 0){
 
-                int totalSales = 0;
+                long totalSales = 0;
 
                 for(VehicleSale sale : salesList){
 
@@ -219,7 +219,7 @@ public class VehicleSaleTotal {
             // no sales data exists for the specified employeeID.
             if(salesList.size() > 0){
 
-                int totalSales = 0;
+                long totalSales = 0;
 
                 for(VehicleSale sale : salesList){
 
