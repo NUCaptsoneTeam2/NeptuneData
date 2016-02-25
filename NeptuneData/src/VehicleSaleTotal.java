@@ -71,7 +71,6 @@ public class VehicleSaleTotal {
 
             } else {
                 System.out.println("No sales data exists for the specified employeeID: " + employeeID);
-
             }
         }
 
@@ -219,7 +218,6 @@ public class VehicleSaleTotal {
 
             } else {
                 System.out.println("No sales data exists for the specified State: " + state);
-
             }
         }
 
