@@ -16,7 +16,7 @@ public class Dealership {
 	private List<String> promotionNames = new ArrayList<String>();
 	private String promoIds; 
 	private List<Employee> employees = new ArrayList<Employee>(); 
-	private long netProfits = 0;
+	private double netProfits = 0;
 
 	public Dealership(int dealershipId, String city, String state, int zip, int managerId, int operatingCosts,
 			String promotionList) {
@@ -85,12 +85,12 @@ public class Dealership {
 		return employees;
 	}
 	
-	public long getNetProfits(){
+	public double getNetProfits(){
 		return this.netProfits;
 	}
 	
-	public void setNetProfits(long netProfits){
-		this.netProfits = netProfits;
+	public void setNetProfits(double netProfits2){
+		this.netProfits = netProfits2;
 	}
 
 	@Override
@@ -118,6 +118,7 @@ public class Dealership {
 			rs = stmt.executeQuery(String.format(sql, table));
 			while (rs.next()) {
 				Dealership item = new Dealership(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6));
+				//item.promotionNames = item.getDealershipPromotionNamesByDealershipId(item.getDealershipId());
 				list.add(item);
 			}
 
@@ -137,6 +138,43 @@ public class Dealership {
 		return list;
 	}
 
+//	private List<String> getDealershipPromotionNamesByDealershipId(int dealershipId) {
+//
+//		// Declare the JDBC objects.
+//		Connection conn = null;
+//		Statement stmt = null;
+//		ResultSet rs = null;
+//		String table = "DealershipPromotions";
+//		ArrayList<String> list = new ArrayList<String>();
+//
+//		try {
+//
+//			String sql = String.format("select promotionName from %s where dealershipID = %s order by dealershipid ASC", table, dealershipId);
+//
+//			conn = ConnectionFactory.getConnection();  
+//			stmt = conn.createStatement();
+//
+//			rs = stmt.executeQuery(String.format(sql, table));
+//			while (rs.next()) {
+//				list.add(rs.getString(1));
+//			}
+//
+//		}
+//
+//		// Handle errors.
+//		catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		finally {
+//			if (null != rs) try { rs.close(); } catch(Exception e) {}
+//			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
+//			if (null != conn) try { conn.close(); } catch(Exception e) {}
+//		}
+//
+//		return list;
+//	}
+	
 	public void saveNetProfit()
 	{
 		// Declare the JDBC objects.

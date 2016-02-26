@@ -28,7 +28,6 @@ public class EmployeeCalc {
 		//Save/update DB with calculations
 		calculateAndStoreCustomerSatisfactionRatings(employees);
 		calculateAndStoreCurrentSalaryBands(employees);
-
 		calculateBonusWithCustomerRatings(employees, dealerships, bands);
 
 	}

@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -8,7 +9,7 @@ public class Employee {
 
 	private int employeeId;
 	private String name;
-	private int baseSalary;
+	private double baseSalary;
 	private int dealershipId;
 	private int rating1;
 	private int rating2;
@@ -16,11 +17,11 @@ public class Employee {
 	private int rating4;
 	private int rating5;
 	private String bandID;
-	private int baseSalaryIncrease;
-	private int newBaseSalary;
+	private double baseSalaryIncrease;
+	private double newBaseSalary;
 	private String newBandID;
-	private float bonusPct = 0;
-	private float bonusPctSatisfaction = 0;
+	private double bonusPct = 0;
+	private double bonusPctSatisfaction = 0;
 	private int bonusPoints = 0;
 	//private int bonusAmount = 0;
 	private CustomerSatisfaction custSat;
@@ -41,7 +42,7 @@ public class Employee {
 		return employeeId;
 	}
 
-	public int getBaseSalary() {
+	public double getBaseSalary() {
 		return baseSalary;
 	}
 
@@ -77,11 +78,11 @@ public class Employee {
 		return bandID;
 	}
 
-	public int getBaseSalaryIncrease() {
+	public double getBaseSalaryIncrease() {
 		return baseSalaryIncrease;
 	}
 
-	public int getNewBaseSalary() {
+	public double getNewBaseSalary() {
 		return newBaseSalary;
 	}
 	
@@ -202,13 +203,20 @@ public class Employee {
 		this.newBandID = bandId;
 	}
 
-	public void setBonusPctSatisfaction(float pct){
-		this.bonusPctSatisfaction = pct;
+	public void setBonusPctSatisfaction(double d){
+		this.bonusPctSatisfaction = d;
 	}
 
 	public void calculateAndSaveSalaryValues(List<SalaryBand> bands){
-		this.baseSalaryIncrease = (int) (this.baseSalary * (.05 + this.bonusPct));
+		
+		//CREDIT on dealing with Currency in Java: http://blog.eisele.net/2011/08/working-with-money-in-java.html
+		double tmpBaseSalaryIncrease = (this.baseSalary * (.05 + this.bonusPct));
+		BigDecimal tmpBaseSalaryIncrease2 = new BigDecimal(tmpBaseSalaryIncrease).setScale(2, BigDecimal.ROUND_HALF_UP);
+		this.baseSalaryIncrease = tmpBaseSalaryIncrease2.doubleValue();
+
 		this.newBaseSalary = this.baseSalary + this.baseSalaryIncrease;
+		//BigDecimal baseSalary2 = new BigDecimal(baseSalary).setScale(2, BigDecimal.ROUND_HALF_UP);
+
 		this.setNewBandID(bands);
 		this.saveCalculatedSalaryInfo();
 	}
@@ -217,7 +225,7 @@ public class Employee {
 		this.bonusPoints = points;
 	}
 
-	public float getBonusPct() {
+	public double getBonusPct() {
 		return bonusPct;
 	}
 
@@ -225,7 +233,7 @@ public class Employee {
 		this.bonusPct = bonusPct;
 	}
 	
-	public float getBonusPctSatisfaction() {
+	public double getBonusPctSatisfaction() {
 		return bonusPctSatisfaction;
 	}
 

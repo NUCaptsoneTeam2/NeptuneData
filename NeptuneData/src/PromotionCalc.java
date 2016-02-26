@@ -28,26 +28,30 @@ public class PromotionCalc {
 				List<Promotion> promotions = Promotion.getAllPromotionsByDealershipID(dealer.getDealershipId());
 
 				for (Promotion promo : promotions) {
-					for (VehicleSale sale : sales) {
-						for (Vehicle vehicle : vehicles) {
-							if ( (vehicle.getModel().compareToIgnoreCase(sale.getModelId()) == 0) && (promo.getMonth() == sale.getMonth()) ) {
+//					if (dealer.getPromotions().stream().anyMatch(str -> str.trim().equals(promo.getPromotionName()))) { //   < search List<String> method CREDIT: http://stackoverflow.com/questions/16218863/java-return-if-list-contains-string
+						for (VehicleSale sale : sales) {
+							for (Vehicle vehicle : vehicles) {
+								if ( (vehicle.getModel().compareToIgnoreCase(sale.getModelId()) == 0) && (promo.getMonth() == sale.getMonth()) ) {
+									//Check to make sure this model is in the correct vehicle class/make for the promotion
+									if (vehicle.getMake().compareToIgnoreCase(promo.getVehicleClass()) == 0) {
+										//Connect sale to promotionId
+										sale.setPromotionId(promo.getPromotionId());
 
-								//Connect sale to promotionId
-								sale.setPromotionId(promo.getPromotionId());
+										//Formula: Total Sales Amount
+										int totalSalesAmt = ((vehicle.getTagPrice() - promo.getCashbackBonus()) * sale.getTotalSalesCount());
+										sale.setTotalSalesAmount(totalSalesAmt);
 
-								//Formula: Total Sales Amount
-								int totalSalesAmt = ((vehicle.getTagPrice() - promo.getCashbackBonus()) * sale.getTotalSalesCount());
-								sale.setTotalSalesAmount(totalSalesAmt);
+										//Formula: Total Profit
+										int totalProfit = totalSalesAmt - sale.getTotalCost(); 
+										sale.setTotalProfit(totalProfit);
 
-								//Formula: Total Profit
-								int totalProfit = totalSalesAmt - sale.getTotalCost(); 
-								sale.setTotalProfit(totalProfit);
-
-								//System.out.println(String.format("Updating dealership %s; cashback=%s", sale.getDealershipId(), promo.getCashbackBonus()));
-								break;
+										//System.out.println(String.format("Updating dealership %s; cashback=%s", sale.getDealershipId(), promo.getCashbackBonus()));
+										break;
+									}
+								}
 							}
 						}
-					}
+					//}
 				}
 			}
 		}
@@ -58,7 +62,7 @@ public class PromotionCalc {
 				if (sale.getPromotionId() > 0)
 					allSalesFinal.add(sale); //need to operate on sales with promotions
 			}
-			
+
 			if (allSalesFinal.size() > 0)
 				VehicleSale.updateVehicleSalesCalculations(allSalesFinal);
 		}

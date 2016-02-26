@@ -22,10 +22,10 @@ public class ParseSalaryBand {
 	       
 	       //Create local variables for fields
 	       String band = (String)fields[0];
-	       int min = Integer.parseInt(fields[1]);
-	       int max = Integer.parseInt(fields[2]);
+	       double min = Double.parseDouble(fields[1]);
+	       double max = Double.parseDouble(fields[2]);
 	       int pdTimeOff = Integer.parseInt(fields[3]);
-	       float pct = Float.parseFloat(fields[4]);
+	       double pct = Double.parseDouble(fields[4]);
 	       
 	       SalaryBand item = new SalaryBand(band, min, max, pdTimeOff, pct);
 	       list.add(item);

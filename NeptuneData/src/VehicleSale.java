@@ -192,14 +192,14 @@ public class VehicleSale {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		List<VehicleSale> list =  new ArrayList<VehicleSale>();;
+		List<VehicleSale> list =  new ArrayList<VehicleSale>();
 
 		try {
 
 			conn = ConnectionFactory.getConnection();
 			stmt = conn.createStatement();
 
-			rs = stmt.executeQuery("SELECT * FROM VehicleSales WHERE ISNULL(promotionID, 0) = 0 AND IsCalculated = 0  AND totalSalesCount > 0");
+			rs = stmt.executeQuery("SELECT * FROM VehicleSales WHERE ISNULL(promotionID, 0) = 0 AND IsCalculated = 0"); //AND totalSalesCount > 0
 			while (rs.next()) {
 				VehicleSale item = new VehicleSale(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9));
 				list.add(item);

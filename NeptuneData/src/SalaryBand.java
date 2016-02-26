@@ -7,12 +7,12 @@ import java.util.List;
 public class SalaryBand {
 
 	private String band;
-	private int minimum;
-	private int maximum = -1;
+	private double minimum;
+	private double maximum = -1;
 	private int paidTimeOffDays;
-	private float bonusPercentage;
+	private double bonusPercentage;
 	
-	public SalaryBand(String band, int min, int max, int paidTimeOffDays, float bonusPercentage) {
+	public SalaryBand(String band, double min, double max, int paidTimeOffDays, double bonusPercentage) {
 		this.band = band;
 		this.minimum = min;
 		this.maximum = max;
@@ -24,11 +24,11 @@ public class SalaryBand {
 		return band;
 	}
 
-	public int getMinimum() {
+	public double getMinimum() {
 		return minimum;
 	}
 
-	public int getMaximum() {
+	public double getMaximum() {
 		if (maximum == -1)
 			return Integer.MAX_VALUE;
 		else
@@ -39,7 +39,7 @@ public class SalaryBand {
 		return paidTimeOffDays;
 	}
 
-	public float getBonusPercentage() {
+	public double getBonusPercentage() {
 		return bonusPercentage;
 	}
 
