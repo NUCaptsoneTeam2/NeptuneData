@@ -67,7 +67,7 @@ public class SalaryBand {
 
 			rs = stmt.executeQuery(String.format(sql, table));
 			while (rs.next()) {
-				SalaryBand item = new SalaryBand(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getFloat(5));
+				SalaryBand item = new SalaryBand(rs.getString(1), rs.getDouble(2), rs.getDouble(3), rs.getInt(4), rs.getDouble(5));
 				list.add(item);
 			}
 
