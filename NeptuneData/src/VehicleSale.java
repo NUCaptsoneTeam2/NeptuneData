@@ -227,6 +227,7 @@ public class VehicleSale {
 		Statement stmt = null;
 		ResultSet rs = null;
 		String table = "VehicleSales";
+		int lastDealerID = 0;
 
 		try {
 
@@ -251,10 +252,11 @@ public class VehicleSale {
 						sale.getModelId(),
 						sale.getDealershipId());
 				stmt.addBatch(SQL);
+				lastDealerID = sale.dealershipId;
 
 				//process in batches of 500 records; this volume seemed about right after a few different tests
 				if (i % 2000 == 0 && i != 0){
-					System.out.println("Beginning commit " + i + " @ " + LocalDateTime.now().toString());
+					System.out.println("Beginning commit on dealership " + sale.dealershipId + i + " @ " + LocalDateTime.now().toString());
 					stmt.executeBatch();					
 					stmt.clearBatch();
 					System.out.println("Completed @ " + LocalDateTime.now().toString());
@@ -262,7 +264,7 @@ public class VehicleSale {
 				i++;
 			}
 
-			System.out.println("Beginning commit " + i + " @ " + LocalDateTime.now().toString());
+			System.out.println(String.format("Beginning commit %s for dealership %s @ %s",i, lastDealerID, LocalDateTime.now()));
 			//execute final batch			
 			stmt.executeBatch();
 			System.out.println("Completed @ " + LocalDateTime.now().toString());
