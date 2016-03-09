@@ -1,4 +1,8 @@
-
+/**
+ * Calculate pre-calculated data fields for employees, promotions, and dealerships.
+ *
+ * @version 1.0
+ */
 public class Calculate {
 
 	public static void run() {
@@ -22,8 +26,6 @@ public class Calculate {
 			DealershipCalc.run();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	
-
+		}
 	}
-	
 }
