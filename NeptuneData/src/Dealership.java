@@ -4,6 +4,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Define objects containing information about individual dealerships.
+ *
+ * @version 1.0
+ */
 public class Dealership {
 
 	private int dealershipId;
@@ -18,6 +23,19 @@ public class Dealership {
 	private List<Employee> employees = new ArrayList<Employee>(); 
 	private double netProfits = 0;
 
+    /**
+     * CONSTRUCTOR
+     *
+     * Create dealership object
+     *
+     * @param dealershipId      Unique dealership ID.
+     * @param city              City dealership is located in
+     * @param state             State dealership is located in
+     * @param zip               Dealership Zip code
+     * @param managerId         Employee ID of the dealership manager
+     * @param operatingCosts    Dealership operating costs
+     * @param promotionList     List of promotions offered by the dealership
+     */
 	public Dealership(int dealershipId, String city, String state, int zip, int managerId, int operatingCosts,
 			String promotionList) {
 		this.dealershipId = dealershipId;
@@ -34,6 +52,18 @@ public class Dealership {
 
 	}
 
+    /**
+     * CONSTRUCTOR
+     *
+     * Create dealership object.
+     *
+     * @param dealershipId      Unique dealership ID.
+     * @param city              City dealership is located in
+     * @param state             State dealership is located in
+     * @param zip               Dealership Zip code
+     * @param managerId         Employee ID of the dealership manager
+     * @param operatingCosts    Dealership operating costs
+     */
 	public Dealership(int dealershipId, String city, String state, int zip, int managerId, int operatingCosts) {
 		this.dealershipId = dealershipId;
 		this.city = city;
@@ -43,62 +73,134 @@ public class Dealership {
 		this.operatingCosts = operatingCosts;
 	}
 
+    /**
+     * @return The dealership ID of the current dealership object.
+     */
 	public int getDealershipId() {
 		return dealershipId;
 	}
+
+    /**
+     * @return The city the dealership is located in
+     */
 	public String getCity() {
 		return city;
 	}
+
+    /**
+     * @return The state the dealership is located in
+     */
 	public String getState() {
 		return state;
 	}
+
+    /**
+     * @return Dealership zip code.
+     */
 	public int getZip() {
 		return zip;
 	}
+
+    /**
+     * @return Dealership manager
+     */
 	public Employee getManager() {
 		return manager;
 	}
+
+    /**
+     * @return Dealership manager ID
+     */
 	public int getManagerId() {
 		return managerId;
 	}
+
+    /**
+     * Set the manager for the current dealership.
+     * @param dlrManager    Dealership manager employee object
+     */
 	public void setManager(Employee dlrManager){
 		manager = dlrManager;
 	}
+
+    /**
+     * @return Dealership operating costs.
+     */
 	public int getOperatingCosts() {
 		return operatingCosts;
 	}
+
+    /**
+     * @return List object containing the promotions offered by the
+     *          current dealership
+     */
 	public List<String> getPromotions() {
 		return promotionNames;
 	}
+
+    /**
+     * @return Promotion IDs for the current dealership
+     */
 	public String getPromoIds() {
 		return promoIds;
 	}
+
+    /**
+     * Add a single employee to the current dealership list.
+     * @param emp   Employee to add to dealership employee listing.
+     */
 	public void addEmployee(Employee emp){
 		employees.add(emp);
 	}
 
+    /**
+     * Add multiple employees to the current dealership
+     * @param ees   List of employees to add to the current dealership
+     */
 	public void addEmployees(List<Employee> ees){
 		employees = ees;
 	}
 
+    /**
+     * @return List of employees who work at the current dealership.
+     */
 	public List<Employee> getEmployees(){
 		return employees;
 	}
-	
+
+    /**
+     * @return Total net profits for the dealership
+     */
 	public double getNetProfits(){
 		return this.netProfits;
 	}
-	
+
+    /**
+     * Define the total net profits for the current dealership
+     *
+     * @param netProfits2   Net profit value to assign to the current dealership
+     */
 	public void setNetProfits(double netProfits2){
 		this.netProfits = netProfits2;
 	}
 
+    /**
+     * Convert dealership object information into a readable format that can be used for
+     * debugging purposes.
+     *
+     * @return  String displaying pertinent information about the dealership object.
+     */
 	@Override
 	public String toString() {
 		return "Dealership [dealershipId=" + dealershipId + ", city=" + city + ", state=" + state + ", zip=" + zip
 				+ ", manager=" + managerId + ", operatingCosts=" + operatingCosts + ", promotions=" + promoIds + "]";
 	}
 
+    /**
+     * Retrieves list of dealerships currently loaded into the application database.
+     *
+     * @return  List object of dealerships
+     */
 	public static List<Dealership> getAllBase() {
 
 		// Declare the JDBC objects.
@@ -174,7 +276,10 @@ public class Dealership {
 //
 //		return list;
 //	}
-	
+
+    /**
+     *  Persist net profit amounts to database.
+     */
 	public void saveNetProfit()
 	{
 		// Declare the JDBC objects.
