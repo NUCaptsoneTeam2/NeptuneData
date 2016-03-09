@@ -30,7 +30,7 @@ public class DealershipCalc {
 			List<Employee> employees = Employee.getAllBaseInfoByDealership(dealer.getDealershipId());
 			for (Employee emp : employees) {
 				salaries += emp.getBaseSalary();
-				bonuses += (emp.getBaseSalary() * emp.getBonusPct());
+				bonuses += (emp.getBaseSalary() * (emp.getBonusPct() + emp.getBonusPctSatisfaction()));
 			}
 			
 			netProfits = carSales - (carCost + operatingCost + salaries + bonuses);

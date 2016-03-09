@@ -229,7 +229,7 @@ public class Employee {
 		return bonusPct;
 	}
 
-	public void setBonusPct(float bonusPct) {
+	public void setBonusPct(double bonusPct) {
 		this.bonusPct = bonusPct;
 	}
 	
@@ -289,7 +289,7 @@ public class Employee {
 
 		try {
 
-			String sql = String.format("select name, employeeID, baseSalary, dealershipID, bandID, baseSalaryIncrease, newBaseSalary, newBandID, bonusPct from Employees where dealershipID = %s order by dealershipid, employeeid ASC", dealershipId);
+			String sql = String.format("select name, employeeID, baseSalary, dealershipID, bandID, baseSalaryIncrease, newBaseSalary, newBandID, bonusPct, bonusPctCustSat from Employees where dealershipID = %s order by dealershipid, employeeid ASC", dealershipId);
 
 			conn = ConnectionFactory.getConnection();  
 			stmt = conn.createStatement();
@@ -301,7 +301,8 @@ public class Employee {
 				item.setNewBaseSalary(rs.getInt(6));
 				item.setNewBaseSalary(rs.getInt(7));
 				item.setNewBandID(rs.getString(8));
-				item.setBonusPct(rs.getFloat(9));
+				item.setBonusPct(rs.getDouble(9));
+				item.setBonusPctSatisfaction(rs.getDouble(10));
 				
 				list.add(item);
 			}
