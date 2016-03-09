@@ -4,6 +4,11 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Calculate dealership data.
+ *
+ * @version 1.0
+ */
 public class DealershipCalc {
 	public static void run() throws NumberFormatException, IOException 
 	{
@@ -40,15 +45,13 @@ public class DealershipCalc {
 			NumberFormat fmt = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
 			BigDecimal bonuses2 = new BigDecimal(bonuses).setScale(2, BigDecimal.ROUND_HALF_UP);
 
-			
+			//Print calculation information to the console
 			System.out.println(String.format("Dealership %s Net Profits: %s; Formula: %s - (%s + %s + %s + %s)", 
 					dealer.getDealershipId(),
 					fmt.format(netProfits2), carSales, carCost, operatingCost, salaries, fmt.format(bonuses2)));
 			
 			dealer.setNetProfits(netProfits2.doubleValue());
 			dealer.saveNetProfit();
-
 		}
-		
 	}
 }
