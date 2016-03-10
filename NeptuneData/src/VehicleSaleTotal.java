@@ -9,7 +9,8 @@ import java.util.Locale;
 public class VehicleSaleTotal {
 
     /**
-     * Calculate vehicle sales for a specified employee.
+     * Calculates vehicle sales for a specified employee and returns the value to the console.
+     * @param employeeID    Employee ID number
      */
     public static void calculateTotalCarSalesEmployee(int employeeID) {
 
@@ -81,7 +82,8 @@ public class VehicleSaleTotal {
     }
 
     /**
-     * Calculate the total car sales for a specified dealership.
+     * Calculates the total car sales for a specified dealership and returns the result to the console.
+     * @param dealershipID  Dealership identification number
      */
     public static void calculateTotalCarSalesDealership(int dealershipID) {
 
@@ -153,7 +155,8 @@ public class VehicleSaleTotal {
     }
 
     /**
-     * Calculate vehicle sales for a specified state.
+     * Calculates vehicle sales for a specified state and returns the result to the console.
+     * @param state     Two character state abbreviation
      */
     public static void calculateTotalCarSalesState(String state) {
 
@@ -228,7 +231,7 @@ public class VehicleSaleTotal {
     }
 
     /**
-     * Calculate vehicle sales across the nation (i.e. the entire dataset)
+     * Calculates vehicle sales across the nation (i.e. the entire dataset) and returns the value to the console.
      */
     public static void calculateTotalCarSalesNational() {
 
