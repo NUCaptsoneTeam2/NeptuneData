@@ -4,6 +4,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Create promotion object from raw data.
+ *
+ * @version 1.0
+ */
 public class Promotion {
 
 	private int promotionId;
@@ -13,7 +18,16 @@ public class Promotion {
 	private String vehicleClass;
 	private int dealershipId;
 
-
+	/**
+	 * CONSTRUCTOR
+	 *
+	 * Create promotions object.
+	 *
+	 * @param promotionName	Name of the promotion being offered
+	 * @param monthNum		Numeric value of the month the promotion is being offered in
+	 * @param cashBackBonus	The amount of cashback given to the customer during the promotional period
+	 * @param vehicleClass	Class of the vehicle eligible for the promotion
+     */
 	public Promotion(String promotionName, int monthNum, int cashBackBonus, String vehicleClass) {
 		this.promotionId = -1;
 		this.promotionName = promotionName;
@@ -23,6 +37,18 @@ public class Promotion {
 		this.dealershipId = -1; //unassigned
 	}
 
+	/**
+	 * CONSTRUCTOR
+	 *
+	 * Create promotions object.
+	 *
+	 * @param promotionId	Unique identification number for the promotion
+	 * @param promotionName	Name of the promotion being offered
+	 * @param monthNum		Numeric value of the month the promotion is being offered in
+	 * @param cashBackBonus	The amount of cashback given to the customer during the promotional period
+	 * @param vehicleClass	Class of the vehicle eligible for the promotion
+     * @param dealershipId	Identification number of the dealership offering the promotion.
+     */
 	public Promotion(int promotionId, String promotionName, int monthNum, int cashBackBonus, String vehicleClass, int dealershipId) {
 		this.promotionId = promotionId;
 		this.promotionName = promotionName;
@@ -32,36 +58,64 @@ public class Promotion {
 		this.dealershipId = dealershipId;
 	}
 
+	/**
+	 * @return promotion identification number
+     */
 	public int getPromotionId() {
 		return promotionId;
 	}
 
+	/**
+	 * @return name of the promotion
+     */
 	public String getPromotionName() {
 		return promotionName;
 	}
 
+	/**
+	 * @return month promition was offered/eligible in
+     */
 	public int getMonth() {
 		return month;
 	}
 
+	/**
+	 * @return dollar amount of the cashback bonus offered to the customer during the promotion
+     */
 	public int getCashbackBonus() {
 		return cashBackBonus;
 	}
 
+	/**
+	 * @return type of vehicle eligible for the promotion offer (i.e. Car, Truck, SUV, etc.)
+     */
 	public String getVehicleClass() {
 		return vehicleClass;
 	}
 
+	/**
+	 * @return identification number of the dealership offering the promotion
+     */
 	public int getDealershipId() {
 		return dealershipId;
 	}
 
+	/**
+	 * Convert promotion object information into a readable format that can be used for
+	 * debugging purposes.
+	 *
+	 * @return  String displaying pertinent information about the promotion object.
+	 */
 	@Override
 	public String toString() {
 		return "Promotion [promotionId=" + promotionId + ", month=" + month + ", cashBackBonus=" + cashBackBonus
 				+ ", vehicleClass=" + vehicleClass + ", dealershipId=" + dealershipId + "]";
 	}
-	
+
+	/**
+	 * Retrieve list of all promotions recorded in the application database.
+	 * @return  List of promotions
+	 */
 	public static List<Promotion> getAll() {
 
 		// Declare the JDBC objects.
@@ -101,7 +155,12 @@ public class Promotion {
 
 		return list;
 	}
-	
+
+	/**
+	 * Returns a list of promotions offered by an individual dealership
+	 * @param dealershipId	Unique dealership identification number
+	 * @return list of promotions offered by the specified dealership
+     */
 	public static List<Promotion> getAllPromotionsByDealershipID(int dealershipId) {
 		// Declare the JDBC objects.
 		Connection conn = null;

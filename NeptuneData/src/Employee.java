@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Create employee object from raw data. Also provides methods for calculating employee salary increases
- * based on customer satisfaction reviews and assignig salary bands based on the new employee base salary.
+ * based on customer satisfaction reviews and assigning salary bands based on the new employee base salary.
  *
  * @version 1.0
  */

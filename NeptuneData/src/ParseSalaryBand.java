@@ -7,10 +7,20 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Parse raw SalaryBand text file to create Salary Band objects
+ * for each Salary Band listed in the file.
+ */
 public class ParseSalaryBand {
 	
 	private static String path = Constants.FILE_SALARYBAND;
 
+    /**
+     *
+     * @return list of salary band objects created from the raw text file data.
+     * @throws NumberFormatException
+     * @throws IOException
+     */
 	public static List<SalaryBand> parse() throws NumberFormatException, IOException
 	{
 	   List<SalaryBand> list = new ArrayList<SalaryBand>();
@@ -21,7 +31,7 @@ public class ParseSalaryBand {
 	       String[] fields = line.split("[|]");
 	       
 	       //Create local variables for fields
-	       String band = (String)fields[0];
+	       String band = fields[0];
 	       double min = Double.parseDouble(fields[1]);
 	       double max = Double.parseDouble(fields[2]);
 	       int pdTimeOff = Integer.parseInt(fields[3]);
@@ -38,6 +48,9 @@ public class ParseSalaryBand {
 	   return list;
 	}
 
+	/**
+	 * Load raw Salary Band data into the SalaryBand database table.
+	 */
 	public static void loadRaw()
 	{
 		// Declare the JDBC objects.

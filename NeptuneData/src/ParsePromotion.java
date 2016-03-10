@@ -7,10 +7,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Parse raw Promotions text file to create Promotion objects
+ * for each promotion listed in the file.
+ *
+ * @version 1.0
+ */
 public class ParsePromotion {
 
 	private static String path = Constants.FILE_PROMOTIONS;
 
+    /**
+     *
+     * @return list of promotions objects created from the raw text file data.
+     * @throws NumberFormatException
+     * @throws IOException
+     */
 	public static List<Promotion> parse() throws NumberFormatException, IOException {
 
 		List<Promotion> list = new ArrayList<Promotion>();
@@ -37,6 +49,9 @@ public class ParsePromotion {
 		return list;
 	}
 
+	/**
+	 * Load raw promotions data into the Promotions database table.
+	 */
 	public static void loadRaw() {
 		// Declare the JDBC objects.
 		Connection conn = null;

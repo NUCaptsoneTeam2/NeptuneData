@@ -7,10 +7,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Parse raw Vehicle text file to create Vehicle objects
+ * for each vehicle listed in the file.
+ *
+ * @version 1.0
+ */
 public class ParseVehicle {
 
     private static String path = Constants.FILE_CARMODELS;
 
+    /**
+     *
+     * @return list of vehicle objects created from the raw text file data
+     * @throws NumberFormatException
+     * @throws IOException
+     */
     private static List<Vehicle> parse() throws NumberFormatException, IOException {
 
         List<Vehicle> list = new ArrayList<Vehicle>();
@@ -37,6 +49,9 @@ public class ParseVehicle {
         return list;
     }
 
+    /**
+     * Load raw vehicle data into the Vehicles database table.
+     */
     public static void loadRaw() {
         // Declare the JDBC objects.
         Connection conn = null;
