@@ -11,6 +11,14 @@ public class Data {
 	/**
 	 * Parse raw data files and persist the data into the application
 	 * database.
+     *
+     * Implements loadRaw method of ParseSalaryBand Class {@link ParseSalaryBand#loadRaw()}
+     * Implements loadRaw method of ParsePromotion Class {@link ParsePromotion#loadRaw()}
+     * Implements loadRaw method of ParseVehicle Class {@link ParseVehicle#loadRaw()}
+     * Implements loadRaw method of ParseEmployee Class {@link ParseEmployee#loadRaw()}
+     * Implements loadRaw method of ParseDealership Class {@link ParseDealership#loadRaw()}
+     * Implements loadRaw method of ParseVehicleSaleRaw Class {@link ParseVehicleSaleRaw#loadRaw()}
+     *
 	 * @param SalaryBand 	(required) Specify whether salary band information
 	 *                   	should be parsed and imported into the database.
 	 * @param Promotion		(required) Specify whether promotions data should
