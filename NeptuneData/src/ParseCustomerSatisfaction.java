@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Parse raw Customer Satisfaction text files to create Customer Satisfaction objects
- * for each employee.
+ * Parse raw Customer Satisfaction text file to create Customer Satisfaction objects
+ * for each employee listed in the file.
  */
 public class ParseCustomerSatisfaction {
 	
