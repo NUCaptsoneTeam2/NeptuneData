@@ -1,9 +1,9 @@
 /**
  * Calculate pre-calculated data fields for employees, promotions, and dealerships.
  *
- * Implements the run method of the EmployeeCalc Class: {@link EmployeeCalc}
- * Implements the run method of the PromotionCalc Class: {@link PromotionCalc}
- * Implements the run method of the DealershipCalc Class: {@link DealershipCalc}
+ * Implements the run method of the EmployeeCalc Class: {@link EmployeeCalc#run()}
+ * Implements the run method of the PromotionCalc Class: {@link PromotionCalc#run()}
+ * Implements the run method of the DealershipCalc Class: {@link DealershipCalc#run()}
  *
  * @version 1.0
  */
