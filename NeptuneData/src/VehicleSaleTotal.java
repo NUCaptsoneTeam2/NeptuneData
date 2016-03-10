@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Provides the ability to retrieve sales data at various levels of granularity (i.e. employee, dealership,
+ * state, and national), sum the sales totals and return the result to the Java console.
+ */
 public class VehicleSaleTotal {
 
     /**
