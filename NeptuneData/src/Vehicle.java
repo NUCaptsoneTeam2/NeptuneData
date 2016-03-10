@@ -4,15 +4,26 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Create vehicle object from raw data.
+ *
+ * @version 1.0
+ */
 public class Vehicle {
 
 	private String model;
 	private String make;
-	private String strMake;
 	private int cost;
 	private int tagPrice;
 
-
+    /**
+     * CONSTRUCTOR
+     *
+     * @param model     Vehicle model number
+     * @param make      Type of vehicle (i.e. Car, SUV, truck, etc.)
+     * @param cost      Actual cost of the vehicle
+     * @param tagPrice  Price the vehicle is listed to sell for.
+     */
 	public Vehicle(String model, String make, int cost, int tagPrice)
 	{
 		this.model = model;
@@ -21,37 +32,60 @@ public class Vehicle {
 		this.tagPrice = tagPrice;		
 	}
 
+    /**
+     *
+     * @return vehicle model number
+     */
 	public String getModel() {
 		return model;
 	}
 
-	public String getMakeString() {
-		return strMake;
-	}
-
+    /**
+     *
+     * @return make of the vehicle
+     */
 	public String getMake() {
 		return make;
 	}
 
+    /**
+     * @return cost of the vehicle
+     */
 	public int getCost() {
 		return cost;
 	}
 
+    /**
+     * @return tag price of the vehicle
+     */
 	public int getTagPrice() {
 		return tagPrice;
 	}
 
+    /**
+     * Enumeration of all valid vehicle makes
+     */
 	public enum Make
 	{
-		ALL, Coupe, Pickup, Sedan, SUV;
-	}
+		ALL, Coupe, Pickup, Sedan, SUV
+    }
 
+    /**
+     * Convert vehicle object information into a readable format that can be used for
+     * debugging purposes.
+     *
+     * @return  String displaying pertinent information about the vehicle object.
+     */
 	@Override
 	public String toString() {
 		return "Vehicle [model=" + model + ", make=" + make + ", cost=" + cost + ", tagPrice=" + tagPrice + "]";
 	}
 
-
+    /**
+     *
+     * @param modelID   Vehicle model ID
+     * @return vehicle object matching specified modelID
+     */
 	public static Vehicle getByModelID(String modelID) {
 		// Declare the JDBC objects.
 		Connection conn = null;
@@ -83,14 +117,17 @@ public class Vehicle {
 		return vehicle;
 	}
 
+    /**
+     * @return list of all vehicle models in the application database.
+     */
 	public static List<Vehicle> getAll() {
 		// Declare the JDBC objects.
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		List<Vehicle> list =  new ArrayList<Vehicle>();;
+		List<Vehicle> list =  new ArrayList<Vehicle>();
 
-		try {
+        try {
 
 			conn = ConnectionFactory.getConnection();
 			stmt = conn.createStatement();
