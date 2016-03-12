@@ -1,22 +1,28 @@
 
+/**
+ * Primary class to load and calculate Neptune Auto application data.
+ *
+ * Implements the loadBaseData Method of the Data class {@link Data#loadBaseData(boolean, boolean, boolean, boolean, boolean, boolean)}
+ * Implements the run method of the Calculate class {@link Calculate#run()}
+ *
+ * @version 1.0
+ **/
 public class Application {
 
 	public static void main(String[] args) {
 
-		// Data
+		// Load data from text files.
 		try {
-			Data.loadBaseData();
+			Data.loadBaseData(true, true, true, true, true, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		// Calculations
+		// Calculate pre-calculated fields.
 		try {
 			Calculate.run();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	
-
-
+		}
 	}
 }

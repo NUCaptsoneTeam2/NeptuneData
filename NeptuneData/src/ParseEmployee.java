@@ -8,10 +8,22 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Parse raw Employee text file to create Employee objects
+ * for each employee listed in the file.
+ *
+ * @version 1.0
+ */
 public class ParseEmployee {
 
 	private static String path = Constants.FILE_SALESMAN;
 
+    /**
+     *
+     * @return list of employee objects created from the raw text file data.
+     * @throws NumberFormatException
+     * @throws IOException
+     */
 	private static List<Employee> parse() throws NumberFormatException, IOException
 	{
 		List<Employee> list = new ArrayList<Employee>();
@@ -22,7 +34,7 @@ public class ParseEmployee {
 			String[] fields = line.split("[|]");
 
 			//Create local variables for fields
-			String name = (String)(fields[0]);
+			String name = fields[0];
 			int employeeId = Integer.parseInt(fields[1]);
 			int baseSalary = Integer.parseInt(fields[2]);
 			int dealershiId = Integer.parseInt(fields[3]);
@@ -38,6 +50,9 @@ public class ParseEmployee {
 		return list;
 	}
 
+    /**
+     * Load raw employee data into the Employees database table.
+     */
 	public static void loadRaw()
 	{
 		// Declare the JDBC objects.

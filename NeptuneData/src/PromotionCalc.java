@@ -3,8 +3,22 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Calculate the sales and profit amounts with and without taking promotions
+ * into account.
+ */
 public class PromotionCalc {
 
+    /**
+     * This method runs the promotions calculation.
+     *
+     * Implements updateVehicleSalesWithoutSales method of the VehicleSale class {@link VehicleSale#updateVehicleSalesWithoutSales()}
+     * Implements calculateSalesProfitsWithPromotions method of the PromotionCalc Class {@link PromotionCalc#calculateSalesProfitsWithPromotions(List, List)}
+     * Implements calculateSalesProfitsWithoutPromotions method of the PromotionCalc Class {@link PromotionCalc#calculateSalesProfitsWithoutPromotions(List)}
+     *
+     * @throws NumberFormatException
+     * @throws IOException
+     */
 	public static void run() throws NumberFormatException, IOException 
 	{
 		//Prepare objects
@@ -17,6 +31,14 @@ public class PromotionCalc {
 
 	}
 
+    /**
+     * Calculate the amount of sales and profits while taking promotions into account
+     *
+     * Implements updateVehicleSalesCalculations of the VehicleSale class {@link VehicleSale#updateVehicleSalesCalculations(List)}
+     *
+     * @param dealers   list of dealership objects
+     * @param vehicles  list of vehicle objects
+     */
 	private static void calculateSalesProfitsWithPromotions(List<Dealership> dealers, List<Vehicle> vehicles) {
 		List<List<VehicleSale>> masterSales = new ArrayList<List<VehicleSale>>(dealers.size());
 		//Big, ugly, nested loop. This is better-suited for a TSQL join
@@ -66,6 +88,13 @@ public class PromotionCalc {
 		}
 	}
 
+    /**
+     * Calculate the total sales and profits before promotions are taken into account (i.e. ignore promotions)
+     *
+     * Implements updateVehicleSalesCalculations of the VehicleSale class {@link VehicleSale#updateVehicleSalesCalculations(List)}
+     *
+     * @param vehicles  list of vehicle objects
+     */
 	private static void calculateSalesProfitsWithoutPromotions(List<Vehicle> vehicles) {
 		List<VehicleSale> sales = VehicleSale.getAllSalesWithoutPromotions();
 		for (VehicleSale sale : sales) {

@@ -7,10 +7,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Parse raw Dealership text file to create Dealership objects
+ * for each dealership listed in the file.
+ *
+ * @version 1.0
+ */
 public class ParseDealership {
 	
 	private static String path = Constants.FILE_DEALERSHIP;
 
+    /**
+     *
+     * @return list of dealership objects created from the raw text file data
+     * @throws NumberFormatException
+     * @throws IOException
+     */
 	private static List<Dealership> parse() throws NumberFormatException, IOException
 	{
 	   List<Dealership> list = new ArrayList<Dealership>();
@@ -22,12 +34,12 @@ public class ParseDealership {
 	       
 	       //Create local variables for fields
 	       int id = Integer.parseInt(fields[0]);
-	       String city = (String)fields[1];
-	       String state = (String)fields[2];
+	       String city = fields[1];
+	       String state = fields[2];
 	       int zip = Integer.parseInt(fields[3]);
 	       int managerId = Integer.parseInt(fields[4]);
 	       int operatingCosts = Integer.parseInt(fields[5]);
-	       String promosRaw = (String)fields[6];
+	       String promosRaw = fields[6];
 	       
 	       Dealership item = new Dealership(id, city, state, zip, managerId, operatingCosts, promosRaw);
 	       list.add(item);
@@ -39,7 +51,10 @@ public class ParseDealership {
        
 	   return list;
 	}
-	
+
+    /**
+     * Load raw dealership data into the Dealerships and DealershipPromotions database tables.
+     */
 	public static void loadRaw()
 	{
 		// Declare the JDBC objects.

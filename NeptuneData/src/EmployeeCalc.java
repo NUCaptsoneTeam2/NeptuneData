@@ -3,8 +3,18 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Calculate employee data.
+ *
+ * @version 1.0
+ */
 public class EmployeeCalc {
 
+    /**
+     * Run the employee calculation routine.
+     * @throws NumberFormatException
+     * @throws IOException
+     */
 	public static void run() throws NumberFormatException, IOException 
 	{
 		//Prepare objects
@@ -33,14 +43,28 @@ public class EmployeeCalc {
 	}
 
 
+    /**
+     * Calculate employee customer satisfaction ratings and persist calculated values to database.
+     * @param employees Employee list
+     */
 	private static void calculateAndStoreCustomerSatisfactionRatings(List<Employee> employees) {
 		ParseEmployee.updateRatings(employees);
 	}
 
+    /**
+     * Calculate current employee salary bands and persist calculated values to database.
+     * @param employees Employee list
+     */
 	private static void calculateAndStoreCurrentSalaryBands(List<Employee> employees) {
 		ParseEmployee.updateSalaryBands(employees);
 	}
 
+    /**
+     * Calculate employee bonuses based on customer satisfaction ratings.
+     * @param employees     Employee list
+     * @param dealerships   Dealership list
+     * @param bands         Salary band list
+     */
 	static private void calculateBonusWithCustomerRatings(List<Employee> employees, List<Dealership> dealerships, List<SalaryBand> bands) {
 
 		// Assign employees/managers to dealerships
@@ -60,7 +84,6 @@ public class EmployeeCalc {
 			dealer.addEmployees(EmployeeCalc.filterEmployeesByDealershipId(employees, dealer.getDealershipId()));
 
 		}
-
 
 		//Calculate bonus including cust sat ratings
 		for (Employee emp : employees) {
@@ -87,7 +110,6 @@ public class EmployeeCalc {
 						pts5stars, pts4stars, pts2stars, pts1stars, totalPoints));
 			}
 		}
-
 
 		/*
 		 * MASSIVE CUSTOMER SATISFACTION ROUTINE
@@ -210,12 +232,24 @@ public class EmployeeCalc {
 			}
 		}		
 	}
-	
+
+    /**
+     * Calculate and save salary values to database
+     *
+     * @param employees     Employee list
+     * @param bands           Salary Band list
+     */
 	private static void saveSalaryValues(List<Employee> employees, List<SalaryBand> bands) {
 		for (Employee emp : employees)
 			emp.calculateAndSaveSalaryValues(bands);
 	}
 
+    /**
+     * Create a list of all employees for a specified dealership.
+     * @param employees         Employee list
+     * @param dealershipId      Dealership identification number
+     * @return
+     */
 	private static List<Employee> filterEmployeesByDealershipId(List<Employee> employees, int dealershipId) {
 		List<Employee> list = new ArrayList<Employee>();
 		for (Employee emp : employees) {

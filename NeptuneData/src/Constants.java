@@ -1,8 +1,11 @@
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Retrieve property values defined in config.properties and define
+ * constant variables to be used throughout the Neptune Auto application
+ */
 public class Constants {
 
 	//Get once
@@ -22,6 +25,11 @@ public class Constants {
 	public static String CATALOG = properties.getProperty("CATALOG");
 	public static String DRIVER = properties.getProperty("DRIVER");
 
+	/**
+	 * Obtain constants defined in config.properties.
+	 *
+	 * @return	Constant properties
+     */
 	private static Properties getProperties()
 	{
 		if (null == properties || properties.isEmpty())
@@ -29,7 +37,7 @@ public class Constants {
 			Properties p = new Properties();
 			try {
 				//TODO: make path dynamic/relative
-				p.load(new FileInputStream("/Users/ccaswell/git/Neptune/NeptuneData/NeptuneData/src/resources/config.properties"));
+				p.load(new FileInputStream("/Users/Corey/git/NeptuneData/NeptuneData/src/resources/config.properties"));
 				return p;
 			} 
 			catch (IOException e) {

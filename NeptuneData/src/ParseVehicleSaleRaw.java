@@ -8,10 +8,22 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Parse raw Vehicle Sales text file to create Vehicle Sales record objects
+ * for each record listed in the file.
+ *
+ * @version 1.0
+ */
 public class ParseVehicleSaleRaw {
 
 	private static String path = Constants.FILE_AUTOSALES;
 
+	/**
+	 *
+	 * @return list of vehicle sales record objects created from the raw text file data.
+	 * @throws NumberFormatException
+	 * @throws IOException
+     */
 	private static List<VehicleSaleRaw> parse() throws NumberFormatException, IOException
 	{
 		List<VehicleSaleRaw> list = new ArrayList<VehicleSaleRaw>();
@@ -47,6 +59,9 @@ public class ParseVehicleSaleRaw {
 		return list;
 	}
 
+	/**
+	 * Load raw vehicle sales data into the VehicleSales database table.
+	 */
 	public static void loadRaw()
 	{
 		// Declare the JDBC objects.

@@ -8,10 +8,21 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Parse raw Customer Satisfaction text file to create Customer Satisfaction objects
+ * for each employee listed in the file.
+ */
 public class ParseCustomerSatisfaction {
 	
 	private static String path = Constants.FILE_SATISFACTION;
 
+    /**
+     *
+     * @return list of Customer Satisfaction objects for each employee listed in the raw
+     * customer satisfaction file.
+     * @throws NumberFormatException
+     * @throws IOException
+     */
 	public static List<CustomerSatisfaction> parse() throws NumberFormatException, IOException
 	{
 	   List<CustomerSatisfaction> list = new ArrayList<CustomerSatisfaction>();
@@ -41,6 +52,9 @@ public class ParseCustomerSatisfaction {
 	   return list;
 	}
 
+    /**
+     * Load raw customer satisfaction data into the raw_CustomerSatisfaction database table.
+     */
 	public static void loadRaw()
 	{
 		// Declare the JDBC objects.
@@ -105,8 +119,5 @@ public class ParseCustomerSatisfaction {
 			if (null != stmt) try { stmt.close(); } catch(Exception e) {}
 			if (null != conn) try { conn.close(); } catch(Exception e) {}
 		}
-
 	}
-
-	
 }
