@@ -126,7 +126,7 @@ public class VehicleSale {
 	 * Set total sales value. Implemented in PromotionCalc class
 	 * {@link PromotionCalc#calculateSalesProfitsWithoutPromotions(List)}
 	 * {@link PromotionCalc#calculateSalesProfitsWithPromotions(List, List)}
-	 * @param totalSalesAmount
+	 * @param totalSalesAmount total dollar value of vehicle sales.
      */
 	public void setTotalSalesAmount(int totalSalesAmount) {
 		this.totalSalesAmount = totalSalesAmount;

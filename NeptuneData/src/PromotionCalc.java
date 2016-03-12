@@ -32,7 +32,7 @@ public class PromotionCalc {
 	}
 
     /**
-     * Calculate the amount of sales & profits while taking promotions into account
+     * Calculate the amount of sales and profits while taking promotions into account
      *
      * Implements updateVehicleSalesCalculations of the VehicleSale class {@link VehicleSale#updateVehicleSalesCalculations(List)}
      *
