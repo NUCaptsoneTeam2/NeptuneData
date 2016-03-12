@@ -8,6 +8,15 @@
  * @version 1.0
  **/
 public class Application {
+	
+	/*
+	 * Neptune Automobiles
+	 * Northwestern University
+	 * CIS 498
+	 * Group 2
+	 * Sandip Patil, Chad Caswell, Drew Collier, Corey Spacht
+	 * 
+	 */
 
 	public static void main(String[] args) {
 
